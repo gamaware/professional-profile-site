@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Alejandro Garcia - Resume</title>
+
+<meta name="viewport" content="width=device-width"/>
+<meta name="description" content="The Curriculum Vitae of Alejandro Garcia."/>
+<meta charset="UTF-8"> 
+
+<!-- Inline critical CSS for controls -->
+<style>
+/* Critical controls styling */
+#controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #ededed;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-label {
+    margin-right: 10px;
+    color: #444;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #cf8a05;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.language-selector select {
+    padding: 8px 12px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    background-color: #f3f3f3;
+    color: #222;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.downloadBtn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 20px auto;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    border: none;
+}
+
+.downloadBtn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#downloadSection {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.last-updated {
+    font-size: 0.8em;
+    text-align: center;
+    color: #444;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Dark mode variables */
+:root {
+  --bg-color: #f3f3f3;
+  --text-color: #222;
+  --secondary-text: #444;
+  --main-bg: #181818;
+  --header-bg: #ededed;
+  --accent-color: #cf8a05;
+  --border-color: #dedede;
+  --button-bg: #4CAF50;
+  --button-hover: #45a049;
+}
+
+[data-theme="dark"] {
+  --bg-color: #2d2d2d;
+  --text-color: #f0f0f0;
+  --secondary-text: #cccccc;
+  --main-bg: #121212;
+  --header-bg: #1a1a1a;
+  --accent-color: #ffa726;
+  --border-color: #444444;
+  --button-bg: #388e3c;
+  --button-hover: #2e7d32;
+}
+
+/* Dark mode specific controls styling */
+[data-theme="dark"] #controls {
+    background: #1a1a1a;
+}
+
+[data-theme="dark"] .toggle-label {
+    color: #cccccc;
+}
+
+[data-theme="dark"] .language-selector select {
+    background-color: #2d2d2d;
+    color: #f0f0f0;
+    border-color: #444444;
+}
+
+[data-theme="dark"] .last-updated {
+    color: #cccccc;
+}
+</style>
+
+<link type="text/css" rel="stylesheet" href="style.css">
+<link href='https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300' rel='stylesheet' type='text/css'>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-259577331-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-259577331-1');
+</script>
+
+<!-- Print-specific styles -->
+<style>
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    #controls, .downloadBtn, .last-updated, #theme-toggle {
+        display: none !important;
+    }
+    #cv {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+    .mainDetails {
+        border-bottom-color: #000 !important;
+    }
+    a {
+        color: #000 !important;
+        text-decoration: none !important;
+    }
+    .sectionTitle h1 {
+        color: #000 !important;
+    }
+}
+</style>
+
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<body id="top">
+<!-- Controls for theme and language -->
+<div id="controls" class="quickFade delayOne">
+    <div class="toggle-container">
+        <span class="toggle-label">Dark Mode</span>
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="language-selector">
+        <select id="language-select" onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+        </select>
+    </div>
+</div>
+
+<!-- English Version -->
+<div id="en-version">
+    <div id="cv" class="instaFade">
+        <div class="mainDetails">
+            <div id="headshot" class="quickFade">
+                <img src="headshot.jpg" alt="Alejandro Garcia" />
+            </div>
+            
+            <div id="name">
+                <h1 class="quickFade delayTwo">Alejandro Garcia</h1>
+                <h4 class="quickFade delayThree">DevOps Consultant @AWS</h4>
+            </div>
+            
+            <div id="contactDetails" class="quickFade delayFour">
+                <ul>
+                    <li>e: <a href="mailto:gamaware@gmail.com" target="_blank">gamaware@gmail.com</a></li>
+                    <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        
+        <div id="mainArea" class="quickFade delayFive">
+            <section>
+                <article>
+                    <div class="sectionTitle">
+                        <h1>Personal Profile</h1>
+                    </div>
+                    
+                    <div class="sectionContent">
+                        <p>IT Expert with over 14 years of experience in Operations, Support, and Software Development Projects. Skilled in Cloud Computing, Databases, Configuration Management, and Operating Systems. Adaptable, flexible, and resourceful, I thrive on challenges and seek opportunities to expand my knowledge in emerging technologies. Passionate about DevOps culture, Python, Cloud Computing, Big Data, AI/Machine Learning, and Open Source Software.</p>
+                    </div>
+                </article>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Work Experience</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <article>
+                        <h2>DevOps Consultant at AWS</h2>
+                        <p class="subDetails">2022 - Present</p>
+                        <p>As a DevOps Consultant at AWS ProServe, I architect and implement CI/CD pipelines, scalable infrastructure, and DevSecOps practices for enterprise clients across LATAM. I've led projects involving GitHub Actions and AWS-native tools (CodePipeline, CodeBuild, CDK) to automate deployments of serverless and containerized workloads, including Lambda functions and Java-based services on ECS and EKS. I design secure, multi-account environments using Terraform and Service Catalog, enabling domain-driven, data mesh-ready architectures. I also incorporate static analysis, artifact versioning, rollback strategies, and environment-aware approvals into CI/CD flows. My role extends to mentoring engineers and documenting technical guidance on system design and container orchestration using Kubernetes on AWS.</p>
+                    </article>
+                    
+                    <article>
+                        <h2>Senior Site Reliability Engineer at Wizeline</h2>
+                        <p class="subDetails">2022</p>
+                        <p>As a Sr. SRE, I spearheaded a successful on-prem to AWS migration project using DMS, RDS, and Terraform templates to automate deployments, reduce downtime, and ensure high data accuracy. I also contributed to talent acquisition by conducting technical interviews.</p>
+                    </article>
+                    
+                    <article>
+                        <h2>Linux Support Engineer at Rackspace</h2>
+                        <p class="subDetails">2021 - 2022</p>
+                        <p>Improved transactional operations for On-Prem and Cloud customers using innovative technologies and best practices to increase efficiency and reduce costs. Showcased industry trend awareness and contributed to process enhancements.</p>
+                    </article>
+
+                    <article>
+                        <h2>DevOps Engineer at Oracle</h2>
+                        <p class="subDetails">2014 - 2021</p>
+                        <p>Led Infrastructure as Code activities, managed the CI/CD process for deploying, maintaining, archiving, restoring, and monitoring Linux environments running Oracle products. I achieved increased efficiency and cost savings through best practices and cross-functional collaboration, ensuring exceptional customer service and project success.</p>
+                    </article>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Key Skills</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <ul class="keySkills">
+                        <li>AWS</li>
+                        <li>Serverless</li>
+                        <li>Python</li>
+                        <li>Git/GitHub</li>
+                        <li>System Design</li>
+                        <li>DevOps</li>
+                        <li>Linux</li>
+                        <li>Terraform</li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Education</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <article>
+                        <h2>Monterrey Institute of Technology and Higher Education - Mexico</h2>
+                        <p class="subDetails">Master's, Computer Science</p>
+                    </article>
+
+                    <article>
+                        <h2>Western Institute of Technology and Higher Education - Mexico</h2>
+                        <p class="subDetails">B. Tech, Information Technology</p>
+                    </article>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+        </div>
+    </div>
+
+    <!-- Download button section -->
+    <div id="downloadSection" class="quickFade delaySix">
+        <button onclick="printResume('en')" class="downloadBtn">Download PDF Resume</button>
+        <p class="last-updated">Last updated: June 9, 2025</p>
+    </div>
+</div>
+
+<!-- Spanish Version -->
+<div id="es-version" style="display: none;">
+    <div id="cv" class="instaFade">
+        <div class="mainDetails">
+            <div id="headshot" class="quickFade">
+                <img src="headshot.jpg" alt="Alejandro Garcia" />
+            </div>
+            
+            <div id="name">
+                <h1 class="quickFade delayTwo">Alejandro García</h1>
+                <h4 class="quickFade delayThree">Consultor DevOps @AWS</h4>
+            </div>
+            
+            <div id="contactDetails" class="quickFade delayFour">
+                <ul>
+                    <li>e: <a href="mailto:gamaware@gmail.com" target="_blank">gamaware@gmail.com</a></li>
+                    <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        
+        <div id="mainArea" class="quickFade delayFive">
+            <section>
+                <article>
+                    <div class="sectionTitle">
+                        <h1>Perfil Personal</h1>
+                    </div>
+                    
+                    <div class="sectionContent">
+                        <p>Experto en TI con más de 14 años de experiencia en Operaciones, Soporte y Proyectos de Desarrollo de Software. Especializado en Computación en la Nube, Bases de Datos, Gestión de Configuración y Sistemas Operativos. Adaptable, flexible y recursivo, prospero ante los desafíos y busco oportunidades para expandir mi conocimiento en tecnologías emergentes. Apasionado por la cultura DevOps, Python, Computación en la Nube, Big Data, IA/Machine Learning y Software de Código Abierto.</p>
+                    </div>
+                </article>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Experiencia Laboral</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <article>
+                        <h2>Consultor DevOps en AWS</h2>
+                        <p class="subDetails">2022 - Presente</p>
+                        <p>Como Consultor DevOps en AWS ProServe, diseño e implemento pipelines de CI/CD, infraestructura escalable y prácticas DevSecOps para clientes empresariales en LATAM. He liderado proyectos que involucran GitHub Actions y herramientas nativas de AWS (CodePipeline, CodeBuild, CDK) para automatizar despliegues de cargas de trabajo serverless y en contenedores, incluyendo funciones Lambda y servicios basados en Java en ECS y EKS. Diseño entornos multi-cuenta seguros utilizando Terraform y Service Catalog, habilitando arquitecturas orientadas a dominios y preparadas para data mesh. También incorporo análisis estático, versionado de artefactos, estrategias de rollback y aprobaciones según entorno en flujos de CI/CD. Mi rol se extiende a la mentoría de ingenieros y documentación de guías técnicas sobre diseño de sistemas y orquestación de contenedores usando Kubernetes en AWS.</p>
+                    </article>
+                    
+                    <article>
+                        <h2>Ingeniero Senior de Confiabilidad de Sitios en Wizeline</h2>
+                        <p class="subDetails">2022</p>
+                        <p>Como Sr. SRE, lideré un exitoso proyecto de migración de on-premise a AWS utilizando DMS, RDS y plantillas de Terraform para automatizar despliegues, reducir el tiempo de inactividad y garantizar una alta precisión de datos. También contribuí a la adquisición de talento realizando entrevistas técnicas.</p>
+                    </article>
+                    
+                    <article>
+                        <h2>Ingeniero de Soporte Linux en Rackspace</h2>
+                        <p class="subDetails">2021 - 2022</p>
+                        <p>Mejoré las operaciones transaccionales para clientes On-Prem y Cloud utilizando tecnologías innovadoras y mejores prácticas para aumentar la eficiencia y reducir costos. Demostré conocimiento de tendencias de la industria y contribuí a mejoras de procesos.</p>
+                    </article>
+
+                    <article>
+                        <h2>Ingeniero DevOps en Oracle</h2>
+                        <p class="subDetails">2014 - 2021</p>
+                        <p>Dirigí actividades de Infraestructura como Código, gestioné el proceso de CI/CD para desplegar, mantener, archivar, restaurar y monitorear entornos Linux ejecutando productos Oracle. Logré mayor eficiencia y ahorro de costos a través de mejores prácticas y colaboración multifuncional, asegurando un servicio al cliente excepcional y el éxito del proyecto.</p>
+                    </article>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Habilidades Clave</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <ul class="keySkills">
+                        <li>AWS</li>
+                        <li>Serverless</li>
+                        <li>Python</li>
+                        <li>Git/GitHub</li>
+                        <li>Diseño de Sistemas</li>
+                        <li>DevOps</li>
+                        <li>Linux</li>
+                        <li>Terraform</li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Educación</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <article>
+                        <h2>Instituto Tecnológico y de Estudios Superiores de Monterrey - México</h2>
+                        <p class="subDetails">Maestría, Ciencias de la Computación</p>
+                    </article>
+
+                    <article>
+                        <h2>Instituto Tecnológico y de Estudios Superiores de Occidente - México</h2>
+                        <p class="subDetails">Licenciatura, Tecnologías de la Información</p>
+                    </article>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+        </div>
+    </div>
+
+    <!-- Download button section -->
+    <div id="downloadSection" class="quickFade delaySix">
+        <button onclick="printResume('es')" class="downloadBtn">Descargar CV en PDF</button>
+        <p class="last-updated">Última actualización: 9 de junio de 2025</p>
+    </div>
+</div>
+
+<!-- Portuguese Version -->
+<div id="pt-version" style="display: none;">
+    <div id="cv" class="instaFade">
+        <div class="mainDetails">
+            <div id="headshot" class="quickFade">
+                <img src="headshot.jpg" alt="Alejandro Garcia" />
+            </div>
+            
+            <div id="name">
+                <h1 class="quickFade delayTwo">Alejandro Garcia</h1>
+                <h4 class="quickFade delayThree">Consultor DevOps @AWS</h4>
+            </div>
+            
+            <div id="contactDetails" class="quickFade delayFour">
+                <ul>
+                    <li>e: <a href="mailto:gamaware@gmail.com" target="_blank">gamaware@gmail.com</a></li>
+                    <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        
+        <div id="mainArea" class="quickFade delayFive">
+            <section>
+                <article>
+                    <div class="sectionTitle">
+                        <h1>Perfil Pessoal</h1>
+                    </div>
+                    
+                    <div class="sectionContent">
+                        <p>Especialista em TI com mais de 14 anos de experiência em Operações, Suporte e Projetos de Desenvolvimento de Software. Especializado em Computação em Nuvem, Bancos de Dados, Gerenciamento de Configuração e Sistemas Operacionais. Adaptável, flexível e engenhoso, prospero com desafios e busco oportunidades para expandir meu conhecimento em tecnologias emergentes. Apaixonado por cultura DevOps, Python, Computação em Nuvem, Big Data, IA/Machine Learning e Software de Código Aberto.</p>
+                    </div>
+                </article>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Experiência Profissional</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <article>
+                        <h2>Consultor DevOps na AWS</h2>
+                        <p class="subDetails">2022 - Presente</p>
+                        <p>Como Consultor DevOps na AWS ProServe, arquiteto e implemento pipelines de CI/CD, infraestrutura escalável e práticas DevSecOps para clientes corporativos em toda a LATAM. Liderei projetos envolvendo GitHub Actions e ferramentas nativas da AWS (CodePipeline, CodeBuild, CDK) para automatizar implantações de cargas de trabalho serverless e em contêineres, incluindo funções Lambda e serviços baseados em Java no ECS e EKS. Projeto ambientes multi-conta seguros usando Terraform e Service Catalog, permitindo arquiteturas orientadas a domínio e preparadas para data mesh. Também incorporo análise estática, versionamento de artefatos, estratégias de rollback e aprovações específicas por ambiente nos fluxos de CI/CD. Meu papel se estende à mentoria de engenheiros e documentação de orientações técnicas sobre design de sistemas e orquestração de contêineres usando Kubernetes na AWS.</p>
+                    </article>
+                    
+                    <article>
+                        <h2>Engenheiro Sênior de Confiabilidade de Site na Wizeline</h2>
+                        <p class="subDetails">2022</p>
+                        <p>Como Sr. SRE, liderei um projeto bem-sucedido de migração on-premise para AWS usando DMS, RDS e templates Terraform para automatizar implantações, reduzir tempo de inatividade e garantir alta precisão de dados. Também contribuí para a aquisição de talentos realizando entrevistas técnicas.</p>
+                    </article>
+                    
+                    <article>
+                        <h2>Engenheiro de Suporte Linux na Rackspace</h2>
+                        <p class="subDetails">2021 - 2022</p>
+                        <p>Melhorei operações transacionais para clientes On-Prem e Cloud usando tecnologias inovadoras e melhores práticas para aumentar a eficiência e reduzir custos. Demonstrei conhecimento das tendências do setor e contribuí para melhorias de processos.</p>
+                    </article>
+
+                    <article>
+                        <h2>Engenheiro DevOps na Oracle</h2>
+                        <p class="subDetails">2014 - 2021</p>
+                        <p>Liderei atividades de Infraestrutura como Código, gerenciei o processo de CI/CD para implantar, manter, arquivar, restaurar e monitorar ambientes Linux executando produtos Oracle. Alcancei maior eficiência e economia de custos através de melhores práticas e colaboração multifuncional, garantindo um serviço excepcional ao cliente e o sucesso do projeto.</p>
+                    </article>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Habilidades Principais</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <ul class="keySkills">
+                        <li>AWS</li>
+                        <li>Serverless</li>
+                        <li>Python</li>
+                        <li>Git/GitHub</li>
+                        <li>Design de Sistemas</li>
+                        <li>DevOps</li>
+                        <li>Linux</li>
+                        <li>Terraform</li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+            
+            <section>
+                <div class="sectionTitle">
+                    <h1>Educação</h1>
+                </div>
+                
+                <div class="sectionContent">
+                    <article>
+                        <h2>Instituto Tecnológico e de Estudos Superiores de Monterrey - México</h2>
+                        <p class="subDetails">Mestrado, Ciência da Computação</p>
+                    </article>
+
+                    <article>
+                        <h2>Instituto Tecnológico e de Estudos Superiores do Ocidente - México</h2>
+                        <p class="subDetails">Bacharelado, Tecnologia da Informação</p>
+                    </article>
+                </div>
+                <div class="clear"></div>
+            </section>
+            
+        </div>
+    </div>
+
+    <!-- Download button section -->
+    <div id="downloadSection" class="quickFade delaySix">
+        <button onclick="printResume('pt')" class="downloadBtn">Baixar Currículo em PDF</button>
+        <p class="last-updated">Última atualização: 9 de junho de 2025</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+// Theme toggle functionality
+const themeToggle = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme');
+
+// Check for saved theme preference or respect OS preference
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (currentTheme === 'dark') {
+        themeToggle.checked = true;
+    }
+} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggle.checked = true;
+}
+
+// Listen for toggle changes
+themeToggle.addEventListener('change', function(e) {
+    if (e.target.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+// Language selector functionality
+function changeLanguage(lang) {
+    // Hide all language versions
+    document.getElementById('en-version').style.display = 'none';
+    document.getElementById('es-version').style.display = 'none';
+    document.getElementById('pt-version').style.display = 'none';
+    
+    // Show selected language version
+    document.getElementById(lang + '-version').style.display = 'block';
+    
+    // Save preference
+    localStorage.setItem('language', lang);
+}
+
+// PDF generation using browser's print functionality
+function printResume(lang) {
+    // Show only the selected language
+    document.getElementById('en-version').style.display = 'none';
+    document.getElementById('es-version').style.display = 'none';
+    document.getElementById('pt-version').style.display = 'none';
+    document.getElementById(lang + '-version').style.display = 'block';
+    
+    // Set filename based on language
+    let filename = 'alejandro-garcia-resume';
+    if (lang === 'es') filename += '-es';
+    if (lang === 'pt') filename += '-pt';
+    
+    // Show loading indicator
+    const downloadBtn = document.querySelector('#' + lang + '-version .downloadBtn');
+    const originalText = downloadBtn.textContent;
+    downloadBtn.textContent = 'Preparing PDF...';
+    downloadBtn.disabled = true;
+    
+    // Give the browser a moment to update the UI
+    setTimeout(function() {
+        // Print the page (which will allow saving as PDF)
+        window.print();
+        
+        // Restore button text
+        downloadBtn.textContent = originalText;
+        downloadBtn.disabled = false;
+        
+        // Restore language preference
+        const savedLanguage = localStorage.getItem('language') || 'en';
+        changeLanguage(savedLanguage);
+    }, 500);
+}
+
+// Check for saved language preference
+const savedLanguage = localStorage.getItem('language');
+if (savedLanguage) {
+    document.getElementById('language-select').value = savedLanguage;
+    changeLanguage(savedLanguage);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+name: Quality Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  markdown-lint:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: DavidAnson/markdownlint-cli2-action@v22
+
+  yaml-lint:
+    name: YAML Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: ibiqlik/action-yamllint@v3
+
+  html-validate:
+    name: HTML Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Validate HTML
+        run: |
+          sudo apt-get update && sudo apt-get install -y tidy
+          for file in *.html; do
+            echo "Validating $file..."
+            tidy -q -e "$file" || true
+          done
+
+  file-structure:
+    name: Validate Repository Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Check required files
+        run: |
+          missing=0
+          for f in LICENSE CODEOWNERS .gitignore CLAUDE.md index.html style.css error.html; do
+            if [ ! -f "$f" ]; then
+              echo "Missing required file: $f"
+              missing=1
+            fi
+          done
+          exit $missing
+
+  actions-security:
+    name: Actions Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Run zizmor
+        run: |
+          pip install zizmor
+          zizmor --config zizmor.yml .github/workflows/

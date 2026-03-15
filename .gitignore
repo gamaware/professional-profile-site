@@ -1,0 +1,29 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Kiro CLI
+*.conversation
+
+# Environment variables
+.env
+.env.local
+
+# Credentials and certificates
+*.pem
+*.key
+credentials.json
+
+# Node
+node_modules/
+
+# Vale
+styles/
+
+# Logs
+*.log
+logs/

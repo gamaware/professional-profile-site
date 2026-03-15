@@ -1,0 +1,24 @@
+language: en-US
+reviews:
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: ".github/workflows/**"
+      instructions: >
+        Review for GitHub Actions security best practices, pinned action
+        versions, and least-privilege permissions.
+    - path: "**/*.html"
+      instructions: >
+        Review for accessibility (alt text, semantic HTML, ARIA labels),
+        SEO best practices, and responsive design.
+    - path: "**/*.css"
+      instructions: >
+        Review for CSS best practices, responsive design, and browser
+        compatibility.
+  path_filters:
+    - "!**/*.jpg"
+    - "!**/*.png"
+    - "!**/*.gif"
+chat:
+  auto_reply: true

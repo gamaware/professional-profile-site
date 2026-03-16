@@ -1,6 +1,8 @@
 name: Quality Checks
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -11,68 +13,397 @@ jobs:
   markdown-lint:
     name: Markdown Linting
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - uses: DavidAnson/markdownlint-cli2-action@v22
+
+      - name: Lint Markdown files
+        id: mdlint
+        uses: DavidAnson/markdownlint-cli2-action@v22
+        with:
+          config: '.markdownlint.yaml'
+
+      - name: Post summary
+        if: always()
+        run: |
+          MD_COUNT=$(find . -name '*.md' -not -path './.git/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.mdlint.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Markdown Linting"
+            echo ""
+            echo "- Files scanned: $MD_COUNT"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  link-checker:
+    name: Check Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Check markdown links
+        id: linkcheck
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          config-file: '.markdown-link-check.json'
+          use-quiet-mode: 'yes'
+        continue-on-error: true
+
+      - name: Post summary
+        if: always()
+        run: |
+          MD_COUNT=$(find . -name '*.md' -not -path './.git/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.linkcheck.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Link Checker"
+            echo ""
+            echo "- Markdown files scanned: $MD_COUNT"
+            echo "- Status: $STATUS (continue-on-error)"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   yaml-lint:
     name: YAML Validation
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - uses: ibiqlik/action-yamllint@v3
+
+      - name: Lint YAML files
+        id: yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: '.yamllint.yml'
+
+      - name: Post summary
+        if: always()
+        run: |
+          YAML_COUNT=$(find . \( -name '*.yml' -o -name '*.yaml' \) \
+            -not -path './.git/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.yamllint.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## YAML Validation"
+            echo ""
+            echo "- Files scanned: $YAML_COUNT"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   html-validate:
     name: HTML Validation
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+
+      - name: Install HTMLHint
+        run: npm install -g htmlhint
+
       - name: Validate HTML
+        id: htmlhint
+        run: htmlhint *.html
+
+      - name: Post summary
+        if: always()
         run: |
-          sudo apt-get update && sudo apt-get install -y tidy
-          for file in *.html; do
-            echo "Validating $file..."
-            tidy -q -e "$file" || true
-          done
+          HTML_COUNT=$(find . -name '*.html' -not -path './.git/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.htmlhint.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## HTML Validation (HTMLHint)"
+            echo ""
+            echo "- Files scanned: $HTML_COUNT"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  css-lint:
+    name: CSS Linting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install Stylelint
+        run: npm install -g stylelint stylelint-config-standard
+
+      - name: Lint CSS
+        id: stylelint
+        run: stylelint "*.css"
+
+      - name: Post summary
+        if: always()
+        run: |
+          CSS_COUNT=$(find . -name '*.css' -not -path './.git/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.stylelint.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## CSS Linting (Stylelint)"
+            echo ""
+            echo "- Files scanned: $CSS_COUNT"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  js-lint:
+    name: JavaScript Linting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install ESLint
+        run: npm install -g eslint
+
+      - name: Lint JavaScript
+        id: eslint
+        run: eslint "*.js"
+
+      - name: Post summary
+        if: always()
+        run: |
+          JS_COUNT=$(find . -name '*.js' -not -path './.git/*' \
+            -not -path './node_modules/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.eslint.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## JavaScript Linting (ESLint)"
+            echo ""
+            echo "- Files scanned: $JS_COUNT"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   file-structure:
     name: Validate Repository Structure
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+
       - name: Check required files
+        id: structure
         run: |
-          missing=0
-          for f in LICENSE CODEOWNERS .gitignore CLAUDE.md index.html style.css error.html; do
-            if [ ! -f "$f" ]; then
-              echo "Missing required file: $f"
-              missing=1
+          echo "Checking repository structure..."
+          errors=0
+
+          for file in LICENSE README.md .gitignore CLAUDE.md CODEOWNERS \
+            CONTRIBUTING.md SECURITY.md index.html style.css error.html main.js; do
+            if [ ! -f "$file" ]; then
+              echo "ERROR: $file missing"
+              errors=$((errors + 1))
+            else
+              echo "$file found"
             fi
           done
-          exit $missing
+
+          for dir in .github/ISSUE_TEMPLATE docs; do
+            if [ ! -d "$dir" ]; then
+              echo "ERROR: $dir/ directory missing"
+              errors=$((errors + 1))
+            else
+              echo "$dir/ found"
+            fi
+          done
+
+          if [ "$errors" -gt 0 ]; then
+            echo "$errors required files/directories missing"
+            exit 1
+          fi
+
+          echo "Repository structure validation complete"
+
+      - name: Post summary
+        if: always()
+        run: |
+          STATUS="${{ steps.structure.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Repository Structure"
+            echo ""
+            echo "- Required files and directories verified"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  readme-quality:
+    name: README Quality Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Check README content
+        id: readme
+        run: |
+          if ! grep -q "## " README.md; then
+            echo "WARNING: README.md should have sections (##)"
+          fi
+
+          if ! grep -q "!\[" README.md; then
+            echo "WARNING: README.md should have badges"
+          fi
+
+          if ! grep -q -i "author\|created by" README.md; then
+            echo "WARNING: README.md should have author information"
+          fi
+
+          if ! grep -q -i "license" README.md; then
+            echo "WARNING: README.md should mention license"
+          fi
+
+          echo "README quality check complete"
+
+      - name: Post summary
+        if: always()
+        run: |
+          STATUS="${{ steps.readme.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## README Quality"
+            echo ""
+            echo "- Sections, badges, author, and license checked"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   actions-security:
     name: Actions Security
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+
       - name: Install zizmor
         env:
           ZIZMOR_VERSION: "1.23.1"
         run: |
           tmpdir="$(mktemp -d)"
-          curl -fsL "https://github.com/woodruffw/zizmor/releases/download/v${ZIZMOR_VERSION}/zizmor-x86_64-unknown-linux-gnu.tar.gz" \
+          curl -fsL \
+            "https://github.com/woodruffw/zizmor/releases/download/v${ZIZMOR_VERSION}/zizmor-x86_64-unknown-linux-gnu.tar.gz" \
             | tar xz -C "$tmpdir"
           sudo mv "$tmpdir/zizmor" /usr/local/bin/zizmor
+
       - name: Run zizmor
+        id: zizmor
         run: zizmor --config zizmor.yml --min-severity low .github/workflows/
+
+      - name: Post summary
+        if: always()
+        run: |
+          WF_COUNT=$(find .github/workflows -name '*.yml' | wc -l | tr -d ' ')
+          STATUS="${{ steps.zizmor.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Actions Security (zizmor)"
+            echo ""
+            echo "- Workflows scanned: $WF_COUNT"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  prose-lint:
+    name: Prose Linting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install Vale
+        env:
+          VALE_VERSION: "3.13.1"
+        run: |
+          tmpdir="$(mktemp -d)"
+          wget -q \
+            "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
+          tar xzf "vale_${VALE_VERSION}_Linux_64-bit.tar.gz" -C "$tmpdir" vale
+          sudo mv "$tmpdir/vale" /usr/local/bin/vale
+
+      - name: Run Vale
+        id: vale
+        run: |
+          vale sync
+          find . -name '*.md' -not -path './styles/*' -not -path './.git/*' \
+            -exec vale {} +
+
+      - name: Post summary
+        if: always()
+        run: |
+          MD_COUNT=$(find . -name '*.md' -not -path './.git/*' \
+            -not -path './styles/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.vale.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Prose Linting (Vale)"
+            echo ""
+            echo "- Files scanned: $MD_COUNT"
+            echo "- Styles: write-good, proselint"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        run: |
+          npm install -g @lhci/cli
+          sudo apt-get update && sudo apt-get install -y chromium-browser
+
+      - name: Run Lighthouse
+        id: lighthouse
+        env:
+          CHROME_PATH: /usr/bin/chromium-browser
+        run: |
+          lhci autorun \
+            --collect.staticDistDir=. \
+            --collect.url=index.html \
+            --collect.url=error.html \
+            --assert.preset=lighthouse:no-pwa \
+            --assert.assertions.categories:accessibility=off \
+            --assert.assertions.categories:seo=off \
+            --assert.assertions.categories:performance=off \
+            --assert.assertions.categories:best-practices=off \
+            --upload.target=filesystem \
+            --upload.outputDir=.lighthouseci || true
+
+      - name: Post summary
+        if: always()
+        run: |
+          {
+            echo "## Lighthouse CI"
+            echo ""
+            if [ -d ".lighthouseci" ]; then
+              for f in .lighthouseci/lhr-*.json; do
+                if [ -f "$f" ]; then
+                  URL=$(jq -r '.requestedUrl' "$f")
+                  A11Y=$(jq -r '.categories.accessibility.score * 100' "$f")
+                  SEO=$(jq -r '.categories.seo.score * 100' "$f")
+                  PERF=$(jq -r '.categories.performance.score * 100' "$f")
+                  BP=$(jq -r '."categories"."best-practices".score * 100' "$f")
+                  echo "### $URL"
+                  echo ""
+                  echo "| Category | Score |"
+                  echo "| --- | --- |"
+                  echo "| Accessibility | ${A11Y}% |"
+                  echo "| SEO | ${SEO}% |"
+                  echo "| Performance | ${PERF}% |"
+                  echo "| Best Practices | ${BP}% |"
+                  echo ""
+                fi
+              done
+            else
+              echo "- Lighthouse results not available"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -5,8 +5,10 @@ set -euo pipefail
   echo "## Lighthouse CI"
   echo ""
   if [ -d ".lighthouseci" ]; then
+    found=false
     for f in .lighthouseci/lhr-*.json; do
       if [ -f "$f" ]; then
+        found=true
         URL=$(jq -r '.requestedUrl' "$f")
         A11Y=$(jq -r '.categories.accessibility.score * 100' "$f")
         SEO=$(jq -r '.categories.seo.score * 100' "$f")
@@ -23,6 +25,9 @@ set -euo pipefail
         echo ""
       fi
     done
+    if [ "$found" = false ]; then
+      echo "- Lighthouse results not available"
+    fi
   else
     echo "- Lighthouse results not available"
   fi

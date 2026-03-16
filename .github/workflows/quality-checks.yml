@@ -205,7 +205,7 @@ jobs:
 
       - name: Check required files
         id: structure
-        run: ${{ github.workspace }}/.github/scripts/validate-structure.sh
+        run: bash ${{ github.workspace }}/.github/scripts/validate-structure.sh
 
       - name: Post summary
         if: always()
@@ -229,7 +229,7 @@ jobs:
 
       - name: Check README content
         id: readme
-        run: ${{ github.workspace }}/.github/scripts/check-readme.sh
+        run: bash ${{ github.workspace }}/.github/scripts/check-readme.sh
 
       - name: Post summary
         if: always()
@@ -290,7 +290,7 @@ jobs:
         id: vale
         uses: errata-ai/vale-action@v2
         with:
-          files: '.'
+          files: '**/*.md'
           vale_flags: '--config=.vale.ini'
 
       - name: Post summary
@@ -323,12 +323,12 @@ jobs:
           urls: |
             index.html
             error.html
-          staticDistDir: '.'
+          configPath: ./lighthouserc.json
           uploadArtifacts: false
 
       - name: Post summary
         if: always()
-        run: ${{ github.workspace }}/.github/scripts/lighthouse-summary.sh
+        run: bash ${{ github.workspace }}/.github/scripts/lighthouse-summary.sh
 
   shell-check:
     name: Shell Script Validation

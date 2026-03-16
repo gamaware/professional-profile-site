@@ -19,7 +19,7 @@ runs:
       shell: bash
       env:
         S3_BUCKET: ${{ inputs.s3_bucket }}
-      run: ${{ github.workspace }}/.github/scripts/sync-to-s3.sh
+      run: bash ${{ github.workspace }}/.github/scripts/sync-to-s3.sh
 
     - name: Invalidate CloudFront Cache
       shell: bash
@@ -33,7 +33,7 @@ runs:
       shell: bash
       env:
         EXPECTED_URL: ${{ inputs.expected_url }}
-      run: ${{ github.workspace }}/.github/scripts/validate-deployment.sh
+      run: bash ${{ github.workspace }}/.github/scripts/validate-deployment.sh
 
     - name: Post summary
       if: always()

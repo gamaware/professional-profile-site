@@ -28,4 +28,5 @@ aws s3 sync . "s3://$S3_BUCKET" \
   --exclude ".prettierignore" \
   --exclude "eslint.config.mjs" \
   --exclude ".markdown-link-check.json" \
+  --exclude "lighthouserc.json" \
   --exclude ".DS_Store"

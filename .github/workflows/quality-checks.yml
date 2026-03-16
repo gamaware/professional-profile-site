@@ -103,6 +103,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
       - name: Install HTMLHint
         run: npm install -g htmlhint
 
@@ -131,6 +136,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
       - name: Install Stylelint
         run: npm install -g stylelint stylelint-config-standard
 
@@ -158,6 +168,11 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
 
       - name: Install ESLint
         run: npm install -g eslint
@@ -190,35 +205,7 @@ jobs:
 
       - name: Check required files
         id: structure
-        run: |
-          echo "Checking repository structure..."
-          errors=0
-
-          for file in LICENSE README.md .gitignore CLAUDE.md CODEOWNERS \
-            CONTRIBUTING.md SECURITY.md index.html style.css error.html main.js; do
-            if [ ! -f "$file" ]; then
-              echo "ERROR: $file missing"
-              errors=$((errors + 1))
-            else
-              echo "$file found"
-            fi
-          done
-
-          for dir in .github/ISSUE_TEMPLATE docs; do
-            if [ ! -d "$dir" ]; then
-              echo "ERROR: $dir/ directory missing"
-              errors=$((errors + 1))
-            else
-              echo "$dir/ found"
-            fi
-          done
-
-          if [ "$errors" -gt 0 ]; then
-            echo "$errors required files/directories missing"
-            exit 1
-          fi
-
-          echo "Repository structure validation complete"
+        run: ${{ github.workspace }}/.github/scripts/validate-structure.sh
 
       - name: Post summary
         if: always()
@@ -242,24 +229,7 @@ jobs:
 
       - name: Check README content
         id: readme
-        run: |
-          if ! grep -q "## " README.md; then
-            echo "WARNING: README.md should have sections (##)"
-          fi
-
-          if ! grep -q "!\[" README.md; then
-            echo "WARNING: README.md should have badges"
-          fi
-
-          if ! grep -q -i "author\|created by" README.md; then
-            echo "WARNING: README.md should have author information"
-          fi
-
-          if ! grep -q -i "license" README.md; then
-            echo "WARNING: README.md should mention license"
-          fi
-
-          echo "README quality check complete"
+        run: ${{ github.workspace }}/.github/scripts/check-readme.sh
 
       - name: Post summary
         if: always()
@@ -316,22 +286,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install Vale
-        env:
-          VALE_VERSION: "3.13.1"
-        run: |
-          tmpdir="$(mktemp -d)"
-          wget -q \
-            "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
-          tar xzf "vale_${VALE_VERSION}_Linux_64-bit.tar.gz" -C "$tmpdir" vale
-          sudo mv "$tmpdir/vale" /usr/local/bin/vale
-
       - name: Run Vale
         id: vale
-        run: |
-          vale sync
-          find . -name '*.md' -not -path './styles/*' -not -path './.git/*' \
-            -exec vale {} +
+        uses: errata-ai/vale-action@v2
+        with:
+          files: '.'
+          vale_flags: '--config=.vale.ini'
 
       - name: Post summary
         if: always()
@@ -356,54 +316,43 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install dependencies
-        run: |
-          npm install -g @lhci/cli
-          sudo apt-get update && sudo apt-get install -y chromium-browser
-
       - name: Run Lighthouse
         id: lighthouse
-        env:
-          CHROME_PATH: /usr/bin/chromium-browser
-        run: |
-          lhci autorun \
-            --collect.staticDistDir=. \
-            --collect.url=index.html \
-            --collect.url=error.html \
-            --assert.preset=lighthouse:no-pwa \
-            --assert.assertions.categories:accessibility=off \
-            --assert.assertions.categories:seo=off \
-            --assert.assertions.categories:performance=off \
-            --assert.assertions.categories:best-practices=off \
-            --upload.target=filesystem \
-            --upload.outputDir=.lighthouseci || true
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            index.html
+            error.html
+          staticDistDir: '.'
+          uploadArtifacts: false
+
+      - name: Post summary
+        if: always()
+        run: ${{ github.workspace }}/.github/scripts/lighthouse-summary.sh
+
+  shell-check:
+    name: Shell Script Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Run ShellCheck
+        id: shellcheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          severity: warning
 
       - name: Post summary
         if: always()
         run: |
+          SH_COUNT=$(find . -name '*.sh' -not -path './.git/*' | wc -l | tr -d ' ')
+          STATUS="${{ steps.shellcheck.outcome == 'success' && 'Passed' || 'Failed' }}"
           {
-            echo "## Lighthouse CI"
+            echo "## Shell Script Validation (ShellCheck)"
             echo ""
-            if [ -d ".lighthouseci" ]; then
-              for f in .lighthouseci/lhr-*.json; do
-                if [ -f "$f" ]; then
-                  URL=$(jq -r '.requestedUrl' "$f")
-                  A11Y=$(jq -r '.categories.accessibility.score * 100' "$f")
-                  SEO=$(jq -r '.categories.seo.score * 100' "$f")
-                  PERF=$(jq -r '.categories.performance.score * 100' "$f")
-                  BP=$(jq -r '."categories"."best-practices".score * 100' "$f")
-                  echo "### $URL"
-                  echo ""
-                  echo "| Category | Score |"
-                  echo "| --- | --- |"
-                  echo "| Accessibility | ${A11Y}% |"
-                  echo "| SEO | ${SEO}% |"
-                  echo "| Performance | ${PERF}% |"
-                  echo "| Best Practices | ${BP}% |"
-                  echo ""
-                fi
-              done
-            else
-              echo "- Lighthouse results not available"
-            fi
+            echo "- Scripts scanned: $SH_COUNT"
+            echo "- Status: $STATUS"
           } >> "$GITHUB_STEP_SUMMARY"

@@ -28,9 +28,45 @@ repos:
     hooks:
       - id: gitleaks
         name: gitleaks
-        entry: gitleaks git --pre-commit --no-banner
+        entry: gitleaks git --pre-commit --no-banner --redact
         language: system
         pass_filenames: false
+
+  # Web formatting
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: prettier --write --ignore-unknown
+        language: system
+        types_or: [html, css, javascript, json]
+
+  # HTML
+  - repo: local
+    hooks:
+      - id: htmlhint
+        name: htmlhint
+        entry: htmlhint
+        language: system
+        types: [html]
+
+  # CSS
+  - repo: local
+    hooks:
+      - id: stylelint
+        name: stylelint
+        entry: stylelint --fix
+        language: system
+        types: [css]
+
+  # JavaScript
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: eslint
+        language: system
+        types: [javascript]
 
   # Markdown
   - repo: https://github.com/igorshubovych/markdownlint-cli
@@ -38,6 +74,15 @@ repos:
     hooks:
       - id: markdownlint
         args: ["--fix"]
+
+  # Prose
+  - repo: local
+    hooks:
+      - id: vale
+        name: vale
+        entry: vale
+        language: system
+        types: [markdown]
 
   # GitHub Actions
   - repo: https://github.com/rhysd/actionlint

@@ -60,6 +60,12 @@ jobs:
             --exclude "zizmor.yml" \
             --exclude ".vale.ini" \
             --exclude "styles/*" \
+            --exclude ".htmlhintrc" \
+            --exclude ".stylelintrc.json" \
+            --exclude ".prettierrc" \
+            --exclude ".prettierignore" \
+            --exclude ".eslintrc.json" \
+            --exclude ".markdown-link-check.json" \
             --exclude ".DS_Store"
 
       - name: Invalidate CloudFront Cache

@@ -66,7 +66,13 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Run zizmor
+      - name: Install zizmor
+        env:
+          ZIZMOR_VERSION: "1.23.1"
         run: |
-          pip install zizmor
-          zizmor --config zizmor.yml .github/workflows/
+          tmpdir="$(mktemp -d)"
+          curl -fsL "https://github.com/woodruffw/zizmor/releases/download/v${ZIZMOR_VERSION}/zizmor-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C "$tmpdir"
+          sudo mv "$tmpdir/zizmor" /usr/local/bin/zizmor
+      - name: Run zizmor
+        run: zizmor --config zizmor.yml .github/workflows/

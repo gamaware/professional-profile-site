@@ -36,7 +36,9 @@ pre-commit install
 vale sync
 
 # 2. Open in browser — no build step required
-open index.html
+# macOS:   open index.html
+# Linux:   xdg-open index.html
+# Windows: start index.html
 
 # 3. Verify all checks pass
 pre-commit run --all-files
@@ -60,7 +62,7 @@ flowchart TB
 
 | Workflow | Trigger | Purpose |
 | --- | --- | --- |
-| `quality-checks.yml` | Every PR and push | 11 jobs: markdown, links, YAML, HTML, CSS, JS, structure, README, zizmor, prose, Lighthouse |
+| `quality-checks.yml` | Every PR and push | Quality, security, and Lighthouse checks (see workflow for full job list) |
 | `deploy.yml` | Push to main | Sync to S3, invalidate CloudFront, verify deployment |
 
 ## Repository Structure

@@ -1,5 +1,11 @@
+var SUPPORTED_LANGUAGES = ["en", "es", "pt"];
+
 // Language selector functionality
 function changeLanguage(lang) {
+  if (SUPPORTED_LANGUAGES.indexOf(lang) === -1) {
+    lang = "en";
+  }
+
   document.getElementById("en-version").style.display = "none";
   document.getElementById("es-version").style.display = "none";
   document.getElementById("pt-version").style.display = "none";
@@ -19,6 +25,7 @@ function printResume(lang) {
   var downloadBtn = document.querySelector(
     "#" + lang + "-version .downloadBtn",
   );
+  if (!downloadBtn) return;
   var originalText = downloadBtn.textContent;
   downloadBtn.textContent = "Preparing PDF...";
   downloadBtn.disabled = true;

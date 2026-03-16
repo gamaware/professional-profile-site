@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -31,6 +31,20 @@ repos:
         entry: gitleaks git --pre-commit --no-banner --redact
         language: system
         pass_filenames: false
+
+  # Shell scripts
+  - repo: local
+    hooks:
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck --severity=warning
+        language: system
+        types: [shell]
+      - id: shellharden
+        name: shellharden
+        entry: shellharden --check
+        language: system
+        types: [shell]
 
   # Web formatting
   - repo: local

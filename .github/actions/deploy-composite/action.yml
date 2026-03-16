@@ -1,0 +1,49 @@
+name: 'Deploy Website Composite Action'
+description: 'Syncs to S3, invalidates CloudFront, and validates deployment'
+
+inputs:
+  s3_bucket:
+    description: 'S3 bucket name'
+    required: true
+  cloudfront_distribution_id:
+    description: 'CloudFront distribution ID'
+    required: true
+  expected_url:
+    description: 'URL to verify after deployment'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Sync to S3
+      shell: bash
+      env:
+        S3_BUCKET: ${{ inputs.s3_bucket }}
+      run: bash ${{ github.workspace }}/.github/scripts/sync-to-s3.sh
+
+    - name: Invalidate CloudFront Cache
+      shell: bash
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ inputs.cloudfront_distribution_id }} \
+          --paths "/*"
+
+    - name: Verify Deployment
+      id: verify
+      shell: bash
+      env:
+        EXPECTED_URL: ${{ inputs.expected_url }}
+      run: bash ${{ github.workspace }}/.github/scripts/validate-deployment.sh
+
+    - name: Post summary
+      if: always()
+      shell: bash
+      run: |
+        {
+          echo "## Website Deployment"
+          echo ""
+          echo "- S3 Bucket: \`${{ inputs.s3_bucket }}\`"
+          echo "- CloudFront: \`${{ inputs.cloudfront_distribution_id }}\`"
+          echo "- Cache invalidation: \`/*\`"
+          echo "- Status: ${{ steps.verify.outcome == 'success' && 'Passed' || 'Failed' }}"
+        } >> "$GITHUB_STEP_SUMMARY"

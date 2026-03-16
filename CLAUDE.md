@@ -28,6 +28,8 @@ docs/
   skills/               # Reusable skills (/ship for PR lifecycle)
 .github/
   workflows/            # CI/CD pipelines (quality-checks, deploy)
+  actions/              # Composite actions (deploy-composite)
+  scripts/              # Extracted bash scripts (validate-structure, etc.)
   ISSUE_TEMPLATE/       # Issue templates (bug-report.md, feature-request.md)
   PULL_REQUEST_TEMPLATE.md
   copilot-instructions.md  # Copilot code review custom instructions
@@ -60,20 +62,21 @@ docs/
 
 All hooks must pass before committing. Install with `pre-commit install`.
 
-### Hooks in use (23 checks)
+### Hooks in use (25 checks)
 
 - **General**: trailing-whitespace, end-of-file-fixer, check-yaml, check-json,
   check-added-large-files (1MB), check-merge-conflict, detect-private-key,
   check-executables-have-shebangs, check-shebang-scripts-are-executable,
   check-symlinks, check-case-conflict, no-commit-to-branch (main).
 - **Secrets**: detect-secrets (with `.secrets.baseline`), gitleaks (`--redact`).
+- **Shell**: shellcheck (`--severity=warning`), shellharden (`--check`).
 - **Web**: Prettier (HTML/CSS/JS), HTMLHint (HTML), Stylelint (CSS), ESLint (JS).
 - **Markdown**: markdownlint with `--fix`.
 - **Prose**: Vale (write-good, proselint).
 - **GitHub Actions**: actionlint, zizmor (security analysis).
 - **Commits**: conventional-pre-commit (commit-msg stage).
 
-## CI/CD (quality-checks.yml — 11 jobs)
+## CI/CD (quality-checks.yml — 12 jobs)
 
 | Job | Tool |
 | --- | --- |
@@ -83,18 +86,19 @@ All hooks must pass before committing. Install with `pre-commit install`.
 | html-validate | HTMLHint |
 | css-lint | Stylelint |
 | js-lint | ESLint |
-| file-structure | custom script |
-| readme-quality | custom script |
+| file-structure | validate-structure.sh |
+| readme-quality | check-readme.sh |
 | actions-security | zizmor v1.23.1 |
-| prose-lint | Vale |
-| lighthouse | Lighthouse CI |
+| prose-lint | vale-action |
+| lighthouse | lighthouse-ci-action |
+| shell-check | action-shellcheck |
 
 ## Claude Code Hooks
 
 Hooks in `.claude/settings.json` automate deterministic actions:
 
-- **Post-edit** (`post-edit.sh`): Auto-runs `markdownlint --fix` on `.md` files
-  after every Edit/Write.
+- **Post-edit** (`post-edit.sh`): Auto-runs `shellharden --replace` + `chmod +x`
+  on `.sh` files and `markdownlint --fix` on `.md` files after every Edit/Write.
 
 ## Claude Code Skills
 

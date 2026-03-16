@@ -1,5 +1,8 @@
 rules:
-  ref-pin:
+  unpinned-uses:
     config:
       policies:
-        - tags
+        "*": ref-pin
+  secrets-outside-env:
+    ignore:
+      - deploy.yml

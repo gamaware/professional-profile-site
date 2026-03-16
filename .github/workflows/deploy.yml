@@ -1,0 +1,93 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - '*.jpg'
+      - '*.png'
+      - '*.gif'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Website
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: GitHubActions-Deploy-${{ github.run_id }}
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync . s3://${{ vars.S3_BUCKET }} \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".claude/*" \
+            --exclude "docs/*" \
+            --exclude ".pre-commit-config.yaml" \
+            --exclude "CLAUDE.md" \
+            --exclude "CODEOWNERS" \
+            --exclude "CONTRIBUTING.md" \
+            --exclude "SECURITY.md" \
+            --exclude "LICENSE" \
+            --exclude "README.md" \
+            --exclude ".gitignore" \
+            --exclude ".secrets.baseline" \
+            --exclude ".markdownlint.yaml" \
+            --exclude ".yamllint.yml" \
+            --exclude ".coderabbit.yaml" \
+            --exclude "zizmor.yml" \
+            --exclude ".vale.ini" \
+            --exclude "styles/*" \
+            --exclude ".DS_Store"
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+
+      - name: Verify Deployment
+        run: |
+          echo "Waiting 10 seconds for propagation..."
+          sleep 10
+          HTTP_CODE=$(curl -sf -o /dev/null -w "%{http_code}" "https://alexgarcia.info" || echo "000")
+          echo "Website response: HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "PASS: Website is responding"
+          else
+            echo "WARN: Website returned HTTP $HTTP_CODE (CloudFront cache may still be propagating)"
+          fi
+
+      - name: Post summary
+        if: always()
+        run: |
+          {
+            echo "## Website Deployment"
+            echo ""
+            echo "- S3 Bucket: \`${{ vars.S3_BUCKET }}\`"
+            echo "- CloudFront: \`${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}\`"
+            echo "- Cache invalidation: \`/*\`"
+            echo "- Status: ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"

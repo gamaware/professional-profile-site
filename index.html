@@ -55,7 +55,9 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-#downloadSection {
+#downloadSection,
+#es-downloadSection,
+#pt-downloadSection {
     text-align: center;
     margin: 30px 0;
 }
@@ -86,7 +88,7 @@
 </style>
 
 <link type="text/css" rel="stylesheet" href="style.css">
-<link href='https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300" rel="stylesheet" type="text/css">
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-259577331-1"></script>
@@ -107,7 +109,9 @@
     #controls, .downloadBtn, .last-updated {
         display: none !important;
     }
-    #cv {
+    #cv,
+    #es-cv,
+    #pt-cv {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
@@ -266,18 +270,18 @@
 
 <!-- Spanish Version -->
 <div id="es-version" style="display: none;">
-    <div id="cv" class="instaFade">
+    <div id="es-cv" class="instaFade">
         <div class="mainDetails">
-            <div id="headshot" class="quickFade">
+            <div id="es-headshot" class="quickFade">
                 <img src="headshot.jpg" alt="Alejandro Garcia" />
             </div>
-            
-            <div id="name">
+
+            <div id="es-name">
                 <h1 class="quickFade delayTwo">Alejandro García</h1>
                 <h4 class="quickFade delayThree">Consultor DevOps @AWS</h4>
             </div>
-            
-            <div id="contactDetails" class="quickFade delayFour">
+
+            <div id="es-contactDetails" class="quickFade delayFour">
                 <ul>
                     <li>e: <a href="mailto:gamaware@gmail.com" target="_blank">gamaware@gmail.com</a></li>
                     <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
@@ -286,7 +290,7 @@
             <div class="clear"></div>
         </div>
         
-        <div id="mainArea" class="quickFade delayFive">
+        <div id="es-mainArea" class="quickFade delayFive">
             <section>
                 <article>
                     <div class="sectionTitle">
@@ -379,7 +383,7 @@
     </div>
 
     <!-- Download button section -->
-    <div id="downloadSection" class="quickFade delaySix">
+    <div id="es-downloadSection" class="quickFade delaySix">
         <button onclick="printResume('es')" class="downloadBtn">Descargar CV en PDF</button>
         <p class="last-updated">Última actualización: 9 de junio de 2025</p>
     </div>
@@ -387,18 +391,18 @@
 
 <!-- Portuguese Version -->
 <div id="pt-version" style="display: none;">
-    <div id="cv" class="instaFade">
+    <div id="pt-cv" class="instaFade">
         <div class="mainDetails">
-            <div id="headshot" class="quickFade">
+            <div id="pt-headshot" class="quickFade">
                 <img src="headshot.jpg" alt="Alejandro Garcia" />
             </div>
-            
-            <div id="name">
+
+            <div id="pt-name">
                 <h1 class="quickFade delayTwo">Alejandro Garcia</h1>
                 <h4 class="quickFade delayThree">Consultor DevOps @AWS</h4>
             </div>
-            
-            <div id="contactDetails" class="quickFade delayFour">
+
+            <div id="pt-contactDetails" class="quickFade delayFour">
                 <ul>
                     <li>e: <a href="mailto:gamaware@gmail.com" target="_blank">gamaware@gmail.com</a></li>
                     <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
@@ -407,7 +411,7 @@
             <div class="clear"></div>
         </div>
         
-        <div id="mainArea" class="quickFade delayFive">
+        <div id="pt-mainArea" class="quickFade delayFive">
             <section>
                 <article>
                     <div class="sectionTitle">
@@ -500,7 +504,7 @@
     </div>
 
     <!-- Download button section -->
-    <div id="downloadSection" class="quickFade delaySix">
+    <div id="pt-downloadSection" class="quickFade delaySix">
         <button onclick="printResume('pt')" class="downloadBtn">Baixar Currículo em PDF</button>
         <p class="last-updated">Última atualização: 9 de junho de 2025</p>
     </div>

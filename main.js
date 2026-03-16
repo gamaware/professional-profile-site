@@ -1,5 +1,3 @@
-/* exported changeLanguage, printResume */
-
 // Language selector functionality
 function changeLanguage(lang) {
   document.getElementById("en-version").style.display = "none";

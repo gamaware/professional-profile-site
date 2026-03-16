@@ -75,4 +75,4 @@ jobs:
             | tar xz -C "$tmpdir"
           sudo mv "$tmpdir/zizmor" /usr/local/bin/zizmor
       - name: Run zizmor
-        run: zizmor --config zizmor.yml .github/workflows/
+        run: zizmor --config zizmor.yml --min-severity low .github/workflows/

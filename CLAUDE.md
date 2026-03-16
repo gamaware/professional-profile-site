@@ -103,7 +103,11 @@ Skills in `.claude/skills/` provide reusable workflows:
 - CloudFront distribution serves the site with HTTPS.
 - Route 53 manages the `alexgarcia.info` domain.
 - ACM provides the SSL certificate.
-- Deployment: sync files to S3 and invalidate CloudFront cache.
+- **Automated**: Push to main with HTML/CSS/JS/image changes triggers
+  `deploy.yml` — syncs to S3 and invalidates CloudFront cache via OIDC.
+- **Manual**: Can also trigger via workflow_dispatch.
+- Infrastructure is managed in a separate repo:
+  [professional-profile-iac](https://github.com/gamaware/professional-profile-iac)
 
 ## Security
 

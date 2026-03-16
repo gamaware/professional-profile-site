@@ -12,7 +12,7 @@
 /* Critical controls styling */
 #controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 10px 20px;
     background: #ededed;
@@ -21,61 +21,6 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     max-width: 800px;
     margin: 20px auto;
-}
-
-.toggle-container {
-    display: flex;
-    align-items: center;
-}
-
-.toggle-label {
-    margin-right: 10px;
-    color: #444;
-}
-
-.theme-switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 30px;
-}
-
-.theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 22px;
-    width: 22px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #cf8a05;
-}
-
-input:checked + .slider:before {
-    transform: translateX(30px);
 }
 
 .language-selector select {
@@ -123,48 +68,20 @@ input:checked + .slider:before {
     font-style: italic;
 }
 
-/* Dark mode variables */
-:root {
-  --bg-color: #f3f3f3;
-  --text-color: #222;
-  --secondary-text: #444;
-  --main-bg: #181818;
-  --header-bg: #ededed;
-  --accent-color: #cf8a05;
-  --border-color: #dedede;
-  --button-bg: #4CAF50;
-  --button-hover: #45a049;
-}
+@media (prefers-color-scheme: dark) {
+    #controls {
+        background: #1a1a1a;
+    }
 
-[data-theme="dark"] {
-  --bg-color: #2d2d2d;
-  --text-color: #f0f0f0;
-  --secondary-text: #cccccc;
-  --main-bg: #121212;
-  --header-bg: #1a1a1a;
-  --accent-color: #ffa726;
-  --border-color: #444444;
-  --button-bg: #388e3c;
-  --button-hover: #2e7d32;
-}
+    .language-selector select {
+        background-color: #2d2d2d;
+        color: #f0f0f0;
+        border-color: #444444;
+    }
 
-/* Dark mode specific controls styling */
-[data-theme="dark"] #controls {
-    background: #1a1a1a;
-}
-
-[data-theme="dark"] .toggle-label {
-    color: #cccccc;
-}
-
-[data-theme="dark"] .language-selector select {
-    background-color: #2d2d2d;
-    color: #f0f0f0;
-    border-color: #444444;
-}
-
-[data-theme="dark"] .last-updated {
-    color: #cccccc;
+    .last-updated {
+        color: #cccccc;
+    }
 }
 </style>
 
@@ -187,7 +104,7 @@ input:checked + .slider:before {
         background: white !important;
         color: black !important;
     }
-    #controls, .downloadBtn, .last-updated, #theme-toggle {
+    #controls, .downloadBtn, .last-updated {
         display: none !important;
     }
     #cv {
@@ -215,15 +132,8 @@ input:checked + .slider:before {
 <![endif]-->
 </head>
 <body id="top">
-<!-- Controls for theme and language -->
+<!-- Language selector -->
 <div id="controls" class="quickFade delayOne">
-    <div class="toggle-container">
-        <span class="toggle-label">Dark Mode</span>
-        <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
-    </div>
     <div class="language-selector">
         <select id="language-select" onchange="changeLanguage(this.value)">
             <option value="en">English</option>
@@ -596,87 +506,6 @@ input:checked + .slider:before {
     </div>
 </div>
 
-<script type="text/javascript">
-// Theme toggle functionality
-const themeToggle = document.getElementById('theme-toggle');
-const currentTheme = localStorage.getItem('theme');
-
-// Check for saved theme preference or respect OS preference
-if (currentTheme) {
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    if (currentTheme === 'dark') {
-        themeToggle.checked = true;
-    }
-} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    themeToggle.checked = true;
-}
-
-// Listen for toggle changes
-themeToggle.addEventListener('change', function(e) {
-    if (e.target.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-    }
-});
-
-// Language selector functionality
-function changeLanguage(lang) {
-    // Hide all language versions
-    document.getElementById('en-version').style.display = 'none';
-    document.getElementById('es-version').style.display = 'none';
-    document.getElementById('pt-version').style.display = 'none';
-    
-    // Show selected language version
-    document.getElementById(lang + '-version').style.display = 'block';
-    
-    // Save preference
-    localStorage.setItem('language', lang);
-}
-
-// PDF generation using browser's print functionality
-function printResume(lang) {
-    // Show only the selected language
-    document.getElementById('en-version').style.display = 'none';
-    document.getElementById('es-version').style.display = 'none';
-    document.getElementById('pt-version').style.display = 'none';
-    document.getElementById(lang + '-version').style.display = 'block';
-    
-    // Set filename based on language
-    let filename = 'alejandro-garcia-resume';
-    if (lang === 'es') filename += '-es';
-    if (lang === 'pt') filename += '-pt';
-    
-    // Show loading indicator
-    const downloadBtn = document.querySelector('#' + lang + '-version .downloadBtn');
-    const originalText = downloadBtn.textContent;
-    downloadBtn.textContent = 'Preparing PDF...';
-    downloadBtn.disabled = true;
-    
-    // Give the browser a moment to update the UI
-    setTimeout(function() {
-        // Print the page (which will allow saving as PDF)
-        window.print();
-        
-        // Restore button text
-        downloadBtn.textContent = originalText;
-        downloadBtn.disabled = false;
-        
-        // Restore language preference
-        const savedLanguage = localStorage.getItem('language') || 'en';
-        changeLanguage(savedLanguage);
-    }, 500);
-}
-
-// Check for saved language preference
-const savedLanguage = localStorage.getItem('language');
-if (savedLanguage) {
-    document.getElementById('language-select').value = savedLanguage;
-    changeLanguage(savedLanguage);
-}
-</script>
+<script src="main.js"></script>
 </body>
 </html>

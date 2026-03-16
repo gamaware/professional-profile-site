@@ -5,17 +5,21 @@ in this repository. It defines the conventions, rules, and structure that must b
 
 ## Repository Overview
 
-Personal professional profile website hosted at `alexgarcia.info`. Static HTML/CSS resume
-site with dark mode, multi-language support (EN/ES/PT), and PDF download functionality.
-Served via AWS S3 + CloudFront with a custom domain through Route 53.
+Personal professional profile website hosted at `alexgarcia.info`. Static HTML/CSS/JS
+resume site with automatic dark mode (`prefers-color-scheme`), multi-language support
+(EN/ES/PT), and PDF download functionality. Served via AWS S3 + CloudFront with a
+custom domain through Route 53.
 
 ## Repository Structure
 
 ```text
-index.html              # Main resume page (was detailed-resume.html in S3)
+index.html              # Main resume page
 style.css               # Stylesheet with dark mode and responsive design
+main.js                 # Language selector and PDF download
 error.html              # Custom 404 error page
 headshot.jpg            # Profile photo
+CONTRIBUTING.md         # Contribution guidelines
+SECURITY.md             # Security disclosure policy
 docs/
   adr/                  # Architecture Decision Records (dateless)
 .claude/
@@ -23,8 +27,8 @@ docs/
   hooks/                # Automation hooks (post-edit formatters)
   skills/               # Reusable skills (/ship for PR lifecycle)
 .github/
-  workflows/            # CI/CD pipelines
-  ISSUE_TEMPLATE/       # Issue templates
+  workflows/            # CI/CD pipelines (quality-checks, deploy)
+  ISSUE_TEMPLATE/       # Issue templates (bug-report.md, feature-request.md)
   PULL_REQUEST_TEMPLATE.md
   copilot-instructions.md  # Copilot code review custom instructions
   dependabot.yml        # Dependabot configuration
@@ -56,16 +60,34 @@ docs/
 
 All hooks must pass before committing. Install with `pre-commit install`.
 
-### Hooks in use
+### Hooks in use (23 checks)
 
 - **General**: trailing-whitespace, end-of-file-fixer, check-yaml, check-json,
   check-added-large-files (1MB), check-merge-conflict, detect-private-key,
   check-executables-have-shebangs, check-shebang-scripts-are-executable,
   check-symlinks, check-case-conflict, no-commit-to-branch (main).
-- **Secrets**: detect-secrets (with `.secrets.baseline`), gitleaks.
+- **Secrets**: detect-secrets (with `.secrets.baseline`), gitleaks (`--redact`).
+- **Web**: Prettier (HTML/CSS/JS), HTMLHint (HTML), Stylelint (CSS), ESLint (JS).
 - **Markdown**: markdownlint with `--fix`.
+- **Prose**: Vale (write-good, proselint).
 - **GitHub Actions**: actionlint, zizmor (security analysis).
 - **Commits**: conventional-pre-commit (commit-msg stage).
+
+## CI/CD (quality-checks.yml — 11 jobs)
+
+| Job | Tool |
+| --- | --- |
+| markdown-lint | markdownlint-cli2 |
+| link-checker | markdown-link-check |
+| yaml-lint | yamllint |
+| html-validate | HTMLHint |
+| css-lint | Stylelint |
+| js-lint | ESLint |
+| file-structure | custom script |
+| readme-quality | custom script |
+| actions-security | zizmor v1.23.1 |
+| prose-lint | Vale |
+| lighthouse | Lighthouse CI |
 
 ## Claude Code Hooks
 
@@ -88,6 +110,14 @@ Skills in `.claude/skills/` provide reusable workflows:
 
 - All default linting rules are enforced. Fix violations, never suppress them.
 - Markdownlint config: MD013 line length at 120 characters, tables exempt.
+
+## Web Code Guidelines
+
+- **HTML**: Must pass HTMLHint. Use semantic elements and alt text on images.
+- **CSS**: Must pass Stylelint (standard config). Dark mode uses
+  `@media (prefers-color-scheme: dark)` — no JavaScript theme toggle.
+- **JavaScript**: Must pass ESLint (browser env). No `eval()` or `implied-eval`.
+- **Formatting**: All HTML/CSS/JS formatted with Prettier.
 
 ## Markdown
 

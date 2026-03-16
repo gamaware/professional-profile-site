@@ -1,0 +1,4 @@
+*.md
+.secrets.baseline
+styles/
+node_modules/

@@ -34,6 +34,10 @@ function printResume(lang) {
   }, 500);
 }
 
+// Expose HTML-called functions to global scope
+window.changeLanguage = changeLanguage;
+window.printResume = printResume;
+
 // Restore saved language preference
 (function () {
   var savedLanguage = localStorage.getItem("language");

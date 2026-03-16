@@ -10,8 +10,6 @@ export default [
         localStorage: "readonly",
         setTimeout: "readonly",
         console: "readonly",
-        changeLanguage: "writable",
-        printResume: "writable",
       },
     },
     rules: {

@@ -29,8 +29,4 @@ aws s3 sync . "s3://$S3_BUCKET" \
   --exclude "eslint.config.mjs" \
   --exclude ".markdown-link-check.json" \
   --exclude "lighthouserc.json" \
-  --exclude ".DS_Store" \
-  --exclude "package.json" \
-  --exclude "package-lock.json" \
-  --exclude "node_modules/*" \
-  --exclude "screenshot*"
+  --exclude ".DS_Store"

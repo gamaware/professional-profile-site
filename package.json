@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "serve": "npx serve@latest -l 3000",
+    "serve": "npx serve@14 -l 3000",
     "screenshot": "node screenshot.mjs http://localhost:3000"
   },
   "devDependencies": {

@@ -115,6 +115,28 @@ button:focus-visible {
   box-sizing: border-box;
 }
 
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-group {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero-blob {
+    animation: none;
+  }
+
+  .headshot-img {
+    transition: none;
+  }
+
+  .mobile-menu {
+    transition: none;
+  }
+}
+
 /* Print styles */
 @media print {
   nav,

@@ -190,21 +190,29 @@ function setLanguage(lang) {
 }
 
 function initRevealAnimations() {
+  var reveals = document.querySelectorAll(".reveal, .reveal-group");
+  var i;
+
+  if (typeof IntersectionObserver === "undefined") {
+    for (i = 0; i < reveals.length; i++) {
+      reveals[i].classList.add("visible");
+    }
+    return;
+  }
+
   var observer = new IntersectionObserver(
     function (entries) {
-      var i;
-      for (i = 0; i < entries.length; i++) {
-        if (entries[i].isIntersecting) {
-          entries[i].target.classList.add("visible");
-          observer.unobserve(entries[i].target);
+      var j;
+      for (j = 0; j < entries.length; j++) {
+        if (entries[j].isIntersecting) {
+          entries[j].target.classList.add("visible");
+          observer.unobserve(entries[j].target);
         }
       }
     },
     { threshold: 0.15 },
   );
 
-  var reveals = document.querySelectorAll(".reveal, .reveal-group");
-  var i;
   for (i = 0; i < reveals.length; i++) {
     observer.observe(reveals[i]);
   }

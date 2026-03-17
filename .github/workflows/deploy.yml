@@ -17,10 +17,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Run Quality Gate
+        uses: ./.github/actions/quality-gate-composite
+        with:
+          github_token: ${{ github.token }}
+
   deploy:
     name: Deploy Website
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: quality-gate
+    if: always() && (needs.quality-gate.result == 'success' || github.event_name == 'workflow_dispatch')
     permissions:
       id-token: write
       contents: read

@@ -41,6 +41,7 @@ var TRANSLATIONS = {
     "projects.title": "Projects",
     "projects.coming": "Coming soon",
     "footer.download": "Download PDF Resume",
+    "aria.toggle_menu": "Toggle menu",
   },
   es: {
     "nav.about": "Perfil",
@@ -87,6 +88,7 @@ var TRANSLATIONS = {
     "projects.title": "Proyectos",
     "projects.coming": "Pr\u00f3ximamente",
     "footer.download": "Descargar CV en PDF",
+    "aria.toggle_menu": "Alternar men\u00fa",
   },
   pt: {
     "nav.about": "Perfil",
@@ -133,6 +135,7 @@ var TRANSLATIONS = {
     "projects.title": "Projetos",
     "projects.coming": "Em breve",
     "footer.download": "Baixar Curr\u00edculo em PDF",
+    "aria.toggle_menu": "Alternar menu",
   },
 };
 
@@ -149,6 +152,14 @@ function setLanguage(lang) {
     var key = elements[i].getAttribute("data-i18n");
     if (strings[key] !== undefined) {
       elements[i].textContent = strings[key];
+    }
+  }
+
+  var ariaElements = document.querySelectorAll("[data-i18n-aria]");
+  for (i = 0; i < ariaElements.length; i++) {
+    var ariaKey = ariaElements[i].getAttribute("data-i18n-aria");
+    if (strings[ariaKey] !== undefined) {
+      ariaElements[i].setAttribute("aria-label", strings[ariaKey]);
     }
   }
 
@@ -194,11 +205,10 @@ function initRevealAnimations() {
   var i;
 
   if (typeof IntersectionObserver === "undefined") {
-    for (i = 0; i < reveals.length; i++) {
-      reveals[i].classList.add("visible");
-    }
     return;
   }
+
+  document.body.classList.add("reveal-ready");
 
   var observer = new IntersectionObserver(
     function (entries) {
@@ -220,6 +230,7 @@ function initRevealAnimations() {
 
 function initNavbar() {
   var navbar = document.getElementById("navbar");
+  if (!navbar) return;
   window.addEventListener(
     "scroll",
     function () {
@@ -236,6 +247,7 @@ function initNavbar() {
 function toggleMobileMenu() {
   var menu = document.getElementById("mobile-menu");
   var toggle = document.getElementById("menu-toggle");
+  if (!menu || !toggle) return;
   var isOpen = menu.classList.toggle("open");
   toggle.setAttribute("aria-expanded", String(isOpen));
 }

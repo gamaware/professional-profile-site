@@ -130,8 +130,8 @@ Skills in `.claude/skills/` provide reusable workflows:
 - If a reference image is provided: match layout, spacing, typography, and color
   exactly. Swap in placeholder content where needed. Do not improve or add to
   the design.
-- If no reference image: design from scratch following the existing design system
-  (CSS custom properties, Lato font, accent color palette).
+- If no reference image: design from scratch following the Tailwind-based
+  design system defined below.
 - After changes, visually verify the result. Compare against reference if one
   was provided. Fix mismatches before considering the task done.
 

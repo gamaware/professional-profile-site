@@ -10,6 +10,7 @@ export default [
         localStorage: "readonly",
         setTimeout: "readonly",
         console: "readonly",
+        IntersectionObserver: "readonly",
       },
     },
     rules: {

@@ -32,7 +32,9 @@ while [ "$i" -lt "$MAX_ATTEMPTS" ]; do
   fi
 
   if [ "$QC_STATUS" = "failure" ] || [ "$QC_STATUS" = "cancelled" ] \
-    || [ "$QC_STATUS" = "timed_out" ] || [ "$QC_STATUS" = "action_required" ]; then
+    || [ "$QC_STATUS" = "timed_out" ] || [ "$QC_STATUS" = "action_required" ] \
+    || [ "$QC_STATUS" = "neutral" ] || [ "$QC_STATUS" = "skipped" ] \
+    || [ "$QC_STATUS" = "stale" ]; then
     echo "BLOCKED: Quality Checks concluded with: $QC_STATUS"
     echo "Deployment will not proceed."
 
@@ -46,7 +48,9 @@ while [ "$i" -lt "$MAX_ATTEMPTS" ]; do
     exit 1
   fi
 
-  sleep "$SLEEP_INTERVAL"
+  if [ "$i" -lt "$MAX_ATTEMPTS" ]; then
+    sleep "$SLEEP_INTERVAL"
+  fi
 done
 
 echo "Timed out waiting for Quality Checks after $((MAX_ATTEMPTS * SLEEP_INTERVAL)) seconds."

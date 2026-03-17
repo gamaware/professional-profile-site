@@ -15,4 +15,4 @@ runs:
         GH_TOKEN: ${{ inputs.github_token }}
         GITHUB_SHA: ${{ github.sha }}
         GITHUB_REPOSITORY: ${{ github.repository }}
-      run: ${{ github.workspace }}/.github/scripts/quality-gate.sh
+      run: bash "${{ github.workspace }}/.github/scripts/quality-gate.sh"

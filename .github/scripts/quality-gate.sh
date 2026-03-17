@@ -5,7 +5,7 @@ set -euo pipefail
 # Required env vars: GITHUB_SHA, GITHUB_REPOSITORY, GH_TOKEN
 
 SHA="$GITHUB_SHA"
-MAX_ATTEMPTS=30
+MAX_ATTEMPTS=60
 SLEEP_INTERVAL=10
 
 echo "Waiting for Quality Checks to complete for $SHA..."
@@ -14,7 +14,7 @@ i=0
 while [ "$i" -lt "$MAX_ATTEMPTS" ]; do
   i=$((i + 1))
   QC_STATUS=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$SHA&event=push" \
-    --jq '.workflow_runs[] | select(.name == "Quality Checks") | .conclusion' 2>/dev/null || echo "pending")
+    --jq '[.workflow_runs[] | select(.name == "Quality Checks")] | sort_by(.created_at) | last | .conclusion // "pending"' 2>/dev/null || echo "pending")
 
   echo "Attempt $i/$MAX_ATTEMPTS — Quality Checks: $QC_STATUS"
 
@@ -31,14 +31,15 @@ while [ "$i" -lt "$MAX_ATTEMPTS" ]; do
     exit 0
   fi
 
-  if [ "$QC_STATUS" = "failure" ]; then
-    echo "BLOCKED: Quality Checks failed."
+  if [ "$QC_STATUS" = "failure" ] || [ "$QC_STATUS" = "cancelled" ] \
+    || [ "$QC_STATUS" = "timed_out" ] || [ "$QC_STATUS" = "action_required" ]; then
+    echo "BLOCKED: Quality Checks concluded with: $QC_STATUS"
     echo "Deployment will not proceed."
 
     {
       echo "## Quality Gate"
       echo ""
-      echo "- Quality Checks: Failed"
+      echo "- Quality Checks: $QC_STATUS"
       echo "- Status: BLOCKED — Deployment will not proceed"
     } >> "$GITHUB_STEP_SUMMARY"
 

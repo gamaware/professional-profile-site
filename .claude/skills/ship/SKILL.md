@@ -31,7 +31,7 @@ what was modified, then update:
 3. **docs/adr/** — If a significant architectural decision was made
    (new pattern, new tool, structural change), create or update an ADR.
 4. **MEMORY.md** — Update project memory at
-   `$HOME/.claude/projects/-Users-gamaware-Documents-Repos-personal-professional-profile-website/memory/MEMORY.md`
+   `$HOME/.claude/projects/-Users-gamaware-Documents-Repos-personal-professional-profile-site/memory/MEMORY.md`
    if there are new gotchas, patterns, or preferences learned.
 
 Only update files where changes are actually needed. Do not update docs
@@ -88,7 +88,7 @@ For Copilot threads, resolve them via the GraphQL API:
 
 ```bash
 gh api graphql -f query='{
-  repository(owner: "gamaware", name: "professional-profile-website") {
+  repository(owner: "gamaware", name: "professional-profile-site") {
     pullRequest(number: <NUMBER>) {
       reviewThreads(first: 100) { nodes { id isResolved } }
     }

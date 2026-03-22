@@ -27,8 +27,8 @@ docs/
   hooks/                # Automation hooks (post-edit formatters)
   skills/               # Reusable skills (/ship for PR lifecycle)
 .github/
-  workflows/            # CI/CD pipelines (quality-checks, deploy)
-  actions/              # Composite actions (deploy-composite)
+  workflows/            # CI/CD pipelines (quality-checks, deploy, security, update-pre-commit-hooks)
+  actions/              # Composite actions (deploy, quality-gate, security-scan, update-pre-commit)
   scripts/              # Extracted bash scripts (validate-structure, etc.)
   ISSUE_TEMPLATE/       # Issue templates (bug-report.md, feature-request.md)
   PULL_REQUEST_TEMPLATE.md
@@ -76,7 +76,9 @@ All hooks must pass before committing. Install with `pre-commit install`.
 - **GitHub Actions**: actionlint, zizmor (security analysis).
 - **Commits**: conventional-pre-commit (commit-msg stage).
 
-## CI/CD (quality-checks.yml — 12 jobs)
+## CI/CD Pipelines
+
+### quality-checks.yml (12 jobs)
 
 | Job | Tool |
 | --- | --- |
@@ -93,12 +95,25 @@ All hooks must pass before committing. Install with `pre-commit install`.
 | lighthouse | lighthouse-ci-action |
 | shell-check | action-shellcheck |
 
+### security.yml
+
+Runs Semgrep SAST and Trivy SCA scans on PRs and pushes to main. Uses the
+`.github/actions/security-scan` composite action. Uploads SARIF results to
+GitHub Security tab.
+
+### update-pre-commit-hooks.yml
+
+Weekly scheduled workflow (Sunday midnight) that runs `pre-commit autoupdate`
+and creates a PR with updated hook versions. Uses the
+`.github/actions/update-pre-commit-composite` composite action.
+
 ## Claude Code Hooks
 
 Hooks in `.claude/settings.json` automate deterministic actions:
 
-- **Post-edit** (`post-edit.sh`): Auto-runs `shellharden --replace` + `chmod +x`
-  on `.sh` files and `markdownlint --fix` on `.md` files after every Edit/Write.
+- **Post-edit** (`post-edit.sh`): Uses `$TOOL_INPUT_FILE_PATH` to auto-run
+  `shellharden --replace` + `chmod +x` on `.sh` files and `markdownlint --fix`
+  on `.md` files after every Edit/Write. No `jq` dependency.
 
 ## Claude Code Skills
 

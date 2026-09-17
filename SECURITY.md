@@ -21,4 +21,4 @@ Include:
 
 ## Response
 
-Reports will be reviewed and addressed promptly.
+I review and address reports promptly.

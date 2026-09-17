@@ -18,4 +18,9 @@ case "$FILE" in
             markdownlint --fix "$FILE" 2>/dev/null || true
         fi
         ;;
+    *.html | *.css | *.js)
+        if command -v npx > /dev/null 2>&1; then
+            npx prettier --write "$FILE" 2>/dev/null || true
+        fi
+        ;;
 esac

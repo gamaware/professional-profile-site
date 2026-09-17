@@ -106,12 +106,18 @@ repos:
 
   # Pinned to the same version and severity threshold as the
   # actions-security job in quality-checks.yml so local == CI.
-  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.23.1
+  - repo: local
     hooks:
       - id: zizmor
-        args: [--no-progress, --config, zizmor.yml, --min-severity, low]
-        files: ^\.github/workflows/
+        name: zizmor
+        # Local hook with a pinned dependency: pre-commit autoupdate cannot
+        # bump it past the version CI installs (ZIZMOR_VERSION).
+        entry: zizmor
+        language: python
+        additional_dependencies: ["zizmor==1.23.1"]
+        args: ["--config", "zizmor.yml", ".github/workflows/"]
+        files: ^\.github/workflows/.*\.ya?ml$
+        pass_filenames: false
 
   # Commits
   - repo: https://github.com/compilerla/conventional-pre-commit

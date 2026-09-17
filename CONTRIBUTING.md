@@ -12,7 +12,7 @@ Thank you for your interest in improving this project.
 
 Open a [GitHub Issue](../../issues) describing:
 
-- Which page or component is affected
+- Which page or component the bug affects
 - What is wrong or broken
 - What the correct behavior should be
 - Browser and device used
@@ -30,7 +30,7 @@ Open a [GitHub Issue](../../issues) describing:
 - HTML must pass HTMLHint validation
 - CSS must pass Stylelint (standard config)
 - JavaScript must pass ESLint (browser environment)
-- All web files must be formatted with Prettier
+- Format all web files with Prettier
 - Markdown must pass markdownlint (config in `.markdownlint.yaml`)
 - Commits must follow [Conventional Commits](https://www.conventionalcommits.org/)
 

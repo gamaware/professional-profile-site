@@ -25,7 +25,7 @@ docs/
 .claude/
   settings.json         # Project-level Claude Code settings (hooks, permissions)
   hooks/                # Automation hooks (post-edit formatters)
-  skills/               # Reusable skills (/ship for PR lifecycle)
+  skills/               # Local skills (/deploy, /lint-all); /ship-it is global
 .github/
   workflows/            # CI/CD pipelines (quality-checks, deploy, security, update-pre-commit-hooks)
   actions/              # Composite actions (deploy, quality-gate, security-scan, update-pre-commit)
@@ -112,16 +112,21 @@ and creates a PR with updated hook versions. Uses the
 Hooks in `.claude/settings.json` automate deterministic actions:
 
 - **Post-edit** (`post-edit.sh`): Uses `$TOOL_INPUT_FILE_PATH` to auto-run
-  `shellharden --replace` + `chmod +x` on `.sh` files and `markdownlint --fix`
-  on `.md` files after every Edit/Write. No `jq` dependency.
+  formatters after every Edit/Write. No `jq` dependency.
+  - `.sh` files: `shellharden --replace` + `chmod +x`
+  - `.md` files: `markdownlint --fix`
+  - `.html`, `.css`, `.js` files: `npx prettier --write`
 
 ## Claude Code Skills
 
 Skills in `.claude/skills/` provide reusable workflows:
 
-- **`/ship [PR-number]`** — End-to-end PR lifecycle: updates docs, commits, creates PR,
-  monitors CI, addresses CodeRabbit and Copilot review comments, and merges with
-  `--admin`. Pass a PR number to resume monitoring.
+- **`/ship-it [PR-number]`** — End-to-end PR lifecycle: updates docs, commits, creates PR,
+  monitors CI, addresses CodeRabbit and Copilot review comments, merges with
+  `--admin`, and cleans up stale local branches. Pass a PR number to resume
+  monitoring. Uses global skill.
+- **`/lint-all`** — Run all 25 pre-commit checks without committing.
+- **`/deploy`** — Trigger the deploy workflow manually via GitHub Actions.
 
 ## Linting Policy
 
@@ -201,9 +206,10 @@ reveal transitions).
 - ACM provides the SSL certificate.
 - **Automated**: Push to main with HTML/CSS/JS/image changes triggers
   `deploy.yml` — syncs to S3 and invalidates CloudFront cache via OIDC.
-- **Manual**: Can also trigger via workflow_dispatch.
-- Infrastructure is managed in a separate repo:
+- **Manual**: Can also trigger via `gh workflow run deploy.yml` or use `/deploy`.
+- A separate repo manages the infrastructure:
   [professional-profile-iac](https://github.com/gamaware/professional-profile-iac)
+- No `package.json` at root — Node.js is only used in CI for linting tools.
 
 ## Security
 

@@ -27,7 +27,8 @@ docs/
   hooks/                # Automation hooks (post-edit formatters)
   skills/               # Local skills (/deploy, /lint-all); /ship-it is global
 .github/
-  workflows/            # CI/CD pipelines (quality-checks, deploy, security, update-pre-commit-hooks)
+  workflows/            # CI/CD pipelines (quality-checks, deploy, security, update-pre-commit-hooks,
+                        # auto-merge-bot-prs)
   actions/              # Composite actions (deploy, quality-gate, security-scan, update-pre-commit)
   scripts/              # Extracted bash scripts (validate-structure, etc.)
   ISSUE_TEMPLATE/       # Issue templates (bug-report.md, feature-request.md)
@@ -106,6 +107,20 @@ GitHub Security tab.
 Weekly scheduled workflow (Sunday midnight) that runs `pre-commit autoupdate`
 and creates a PR with updated hook versions. Uses the
 `.github/actions/update-pre-commit-composite` composite action.
+
+### auto-merge-bot-prs.yml
+
+Hourly scheduled workflow (also `workflow_dispatch`) that squash-merges open
+Dependabot PRs and the `chore/update-pre-commit-hooks` PR once every check on
+the PR is green, none is pending, and each status check required by branch
+protection is present and passing. Only PRs whose head branch lives in this
+repository (never forks) and whose author matches the expected bot qualify. It
+merges with `--admin` using the `PRE_COMMIT_PAT` secret because GitHub refuses
+self-approval, so a review-based auto-merge could never satisfy the CODEOWNERS
+rule. It skips drafts, conflicting PRs, and PRs with failing, pending, or
+unreported checks. PRs behind `main` get a branch update and a retry on the
+next run. The `REQUIRED_CHECKS` list in the workflow must match the required
+status checks configured for `main`.
 
 ## Claude Code Hooks
 

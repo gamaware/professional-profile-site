@@ -113,7 +113,7 @@ jobs:
 
       - name: Validate HTML
         id: htmlhint
-        run: htmlhint *.html
+        run: htmlhint ./*.html
 
       - name: Post summary
         if: always()

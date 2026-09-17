@@ -4,6 +4,8 @@ about: Suggest an improvement or new feature
 labels: enhancement
 ---
 
+# Feature Request
+
 ## Description
 
 <!-- What would you like to change or add? -->

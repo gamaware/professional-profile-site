@@ -111,16 +111,17 @@ and creates a PR with updated hook versions. Uses the
 ### auto-merge-bot-prs.yml
 
 Hourly scheduled workflow (also `workflow_dispatch`) that squash-merges open
-Dependabot PRs and the `chore/update-pre-commit-hooks` PR once every check on
-the PR is green, none is pending, and each status check required by branch
-protection is present and passing. Only PRs whose head branch lives in this
-repository (never forks) and whose author matches the expected bot qualify. It
-merges with `--admin` using the `PRE_COMMIT_PAT` secret because GitHub refuses
-self-approval, so a review-based auto-merge could never satisfy the CODEOWNERS
-rule. It skips drafts, conflicting PRs, and PRs with failing, pending, or
-unreported checks. PRs behind `main` get a branch update and a retry on the
-next run. The `REQUIRED_CHECKS` list in the workflow must match the required
-status checks configured for `main`.
+Dependabot PRs and the owner's `chore/update-pre-commit-hooks` PRs once every
+check reported on the PR is green and none is pending. Only PRs whose head
+branch lives in this repository (never forks), that target `main`, and whose
+author is Dependabot or the repository owner qualify. It merges with `--admin`
+using the `PRE_COMMIT_PAT` secret because GitHub refuses self-approval, so a
+review-based auto-merge could never satisfy the CODEOWNERS rule. It passes
+`--match-head-commit` so the merge only lands on the head commit whose checks
+it inspected, and it merges one PR per run so the next run re-evaluates the
+remaining candidates against the new `main`. It skips drafts, conflicting PRs,
+PRs with no registered checks, and PRs with failing or pending checks. PRs
+behind `main` get a branch update and a retry on the next run.
 
 ## Claude Code Hooks
 

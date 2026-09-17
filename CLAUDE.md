@@ -1,7 +1,7 @@
 # CLAUDE.md — Project Instructions for Claude Code
 
 This file is automatically loaded into context when Claude Code starts a conversation
-in this repository. It defines the conventions, rules, and structure that must be followed.
+in this repository. It defines the conventions, rules, and structure to follow.
 
 ## Repository Overview
 
@@ -56,7 +56,7 @@ docs/
   before merging.
 - All required status checks must pass before merge.
 - At least 1 approving review required (CODEOWNERS enforced).
-- All review conversations must be resolved before merge.
+- Resolve all review conversations before merge.
 - Use `--admin` flag to bypass branch protection when necessary.
 
 ## Pre-commit Hooks
@@ -147,7 +147,7 @@ Skills in `.claude/skills/` provide reusable workflows:
 
 ### Absolute rule: NO suppressions on our own code
 
-- All default linting rules are enforced. Fix violations, never suppress them.
+- Enforce all default linting rules. Fix violations, never suppress them.
 - Markdownlint config: MD013 line length at 120 characters, tables exempt.
 
 ## Web Code Guidelines
@@ -162,13 +162,13 @@ Skills in `.claude/skills/` provide reusable workflows:
 
 ### Reference image workflow
 
-- If a reference image is provided: match layout, spacing, typography, and color
+- If the user provides a reference image: match layout, spacing, typography, and color
   exactly. Swap in placeholder content where needed. Do not improve or add to
   the design.
 - If no reference image: design from scratch following the Tailwind-based
   design system defined below.
-- After changes, visually verify the result. Compare against reference if one
-  was provided. Fix mismatches before considering the task done.
+- After changes, visually verify the result. Compare against the reference if
+  one exists. Fix mismatches before considering the task done.
 
 ### Design system
 
@@ -215,7 +215,7 @@ reveal transitions).
 
 ## Deployment
 
-- Static files are hosted in S3 bucket `alexgarcia.info`.
+- The S3 bucket `alexgarcia.info` hosts the static files.
 - CloudFront distribution serves the site with HTTPS.
 - Route 53 manages the `alexgarcia.info` domain.
 - ACM provides the SSL certificate.

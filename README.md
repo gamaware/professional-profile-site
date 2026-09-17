@@ -25,7 +25,7 @@ Personal professional profile and resume website hosted at
 | Route 53 | DNS management for `alexgarcia.info` |
 | ACM | SSL/TLS certificate (us-east-1) |
 
-Infrastructure is managed in a separate repo:
+A separate repo manages the infrastructure:
 [professional-profile-iac](https://github.com/gamaware/professional-profile-iac).
 
 ## Local Development

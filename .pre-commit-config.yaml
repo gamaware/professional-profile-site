@@ -104,14 +104,14 @@ repos:
     hooks:
       - id: actionlint
 
-  - repo: local
+  # Pinned to the same version and severity threshold as the
+  # actions-security job in quality-checks.yml so local == CI.
+  - repo: https://github.com/woodruffw/zizmor-pre-commit
+    rev: v1.23.1
     hooks:
       - id: zizmor
-        name: zizmor
-        entry: zizmor --config zizmor.yml
-        language: system
-        files: \.github/workflows/
-        types: [yaml]
+        args: [--no-progress, --config, zizmor.yml, --min-severity, low]
+        files: ^\.github/workflows/
 
   # Commits
   - repo: https://github.com/compilerla/conventional-pre-commit

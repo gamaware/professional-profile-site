@@ -4,6 +4,8 @@ about: Report a bug or rendering issue
 labels: bug
 ---
 
+# Bug Report
+
 ## Description
 
 <!-- What happened? -->

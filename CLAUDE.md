@@ -1,7 +1,7 @@
 # CLAUDE.md — Project Instructions for Claude Code
 
 This file is automatically loaded into context when Claude Code starts a conversation
-in this repository. It defines the conventions, rules, and structure that must be followed.
+in this repository. It defines the conventions, rules, and structure to follow.
 
 ## Repository Overview
 
@@ -25,9 +25,10 @@ docs/
 .claude/
   settings.json         # Project-level Claude Code settings (hooks, permissions)
   hooks/                # Automation hooks (post-edit formatters)
-  skills/               # Reusable skills (/ship for PR lifecycle)
+  skills/               # Local skills (/deploy, /lint-all); /ship-it is global
 .github/
-  workflows/            # CI/CD pipelines (quality-checks, deploy, security, update-pre-commit-hooks)
+  workflows/            # CI/CD pipelines (quality-checks, deploy, security, update-pre-commit-hooks,
+                        # auto-merge-bot-prs)
   actions/              # Composite actions (deploy, quality-gate, security-scan, update-pre-commit)
   scripts/              # Extracted bash scripts (validate-structure, etc.)
   ISSUE_TEMPLATE/       # Issue templates (bug-report.md, feature-request.md)
@@ -55,7 +56,7 @@ docs/
   before merging.
 - All required status checks must pass before merge.
 - At least 1 approving review required (CODEOWNERS enforced).
-- All review conversations must be resolved before merge.
+- Resolve all review conversations before merge.
 - Use `--admin` flag to bypass branch protection when necessary.
 
 ## Pre-commit Hooks
@@ -107,27 +108,47 @@ Weekly scheduled workflow (Sunday midnight) that runs `pre-commit autoupdate`
 and creates a PR with updated hook versions. Uses the
 `.github/actions/update-pre-commit-composite` composite action.
 
+### auto-merge-bot-prs.yml
+
+Hourly scheduled workflow (also `workflow_dispatch`) that squash-merges open
+Dependabot PRs and the owner's `chore/update-pre-commit-hooks` PRs once every
+check reported on the PR is green and none is pending. Only PRs whose head
+branch lives in this repository (never forks), that target `main`, and whose
+author is Dependabot or the repository owner qualify. It merges with `--admin`
+using the `PRE_COMMIT_PAT` secret because GitHub refuses self-approval, so a
+review-based auto-merge could never satisfy the CODEOWNERS rule. It passes
+`--match-head-commit` so the merge only lands on the head commit whose checks
+it inspected, and it merges one PR per run so the next run re-evaluates the
+remaining candidates against the new `main`. It skips drafts, conflicting PRs,
+PRs with no registered checks, and PRs with failing or pending checks. PRs
+behind `main` get a branch update and a retry on the next run.
+
 ## Claude Code Hooks
 
 Hooks in `.claude/settings.json` automate deterministic actions:
 
 - **Post-edit** (`post-edit.sh`): Uses `$TOOL_INPUT_FILE_PATH` to auto-run
-  `shellharden --replace` + `chmod +x` on `.sh` files and `markdownlint --fix`
-  on `.md` files after every Edit/Write. No `jq` dependency.
+  formatters after every Edit/Write. No `jq` dependency.
+  - `.sh` files: `shellharden --replace` + `chmod +x`
+  - `.md` files: `markdownlint --fix`
+  - `.html`, `.css`, `.js` files: `npx prettier --write`
 
 ## Claude Code Skills
 
 Skills in `.claude/skills/` provide reusable workflows:
 
-- **`/ship [PR-number]`** — End-to-end PR lifecycle: updates docs, commits, creates PR,
-  monitors CI, addresses CodeRabbit and Copilot review comments, and merges with
-  `--admin`. Pass a PR number to resume monitoring.
+- **`/ship-it [PR-number]`** — End-to-end PR lifecycle: updates docs, commits, creates PR,
+  monitors CI, addresses CodeRabbit and Copilot review comments, merges with
+  `--admin`, and cleans up stale local branches. Pass a PR number to resume
+  monitoring. Uses global skill.
+- **`/lint-all`** — Run all 25 pre-commit checks without committing.
+- **`/deploy`** — Trigger the deploy workflow manually via GitHub Actions.
 
 ## Linting Policy
 
 ### Absolute rule: NO suppressions on our own code
 
-- All default linting rules are enforced. Fix violations, never suppress them.
+- Enforce all default linting rules. Fix violations, never suppress them.
 - Markdownlint config: MD013 line length at 120 characters, tables exempt.
 
 ## Web Code Guidelines
@@ -142,13 +163,13 @@ Skills in `.claude/skills/` provide reusable workflows:
 
 ### Reference image workflow
 
-- If a reference image is provided: match layout, spacing, typography, and color
+- If the user provides a reference image: match layout, spacing, typography, and color
   exactly. Swap in placeholder content where needed. Do not improve or add to
   the design.
 - If no reference image: design from scratch following the Tailwind-based
   design system defined below.
-- After changes, visually verify the result. Compare against reference if one
-  was provided. Fix mismatches before considering the task done.
+- After changes, visually verify the result. Compare against the reference if
+  one exists. Fix mismatches before considering the task done.
 
 ### Design system
 
@@ -195,15 +216,16 @@ reveal transitions).
 
 ## Deployment
 
-- Static files are hosted in S3 bucket `alexgarcia.info`.
+- The S3 bucket `alexgarcia.info` hosts the static files.
 - CloudFront distribution serves the site with HTTPS.
 - Route 53 manages the `alexgarcia.info` domain.
 - ACM provides the SSL certificate.
 - **Automated**: Push to main with HTML/CSS/JS/image changes triggers
   `deploy.yml` — syncs to S3 and invalidates CloudFront cache via OIDC.
-- **Manual**: Can also trigger via workflow_dispatch.
-- Infrastructure is managed in a separate repo:
+- **Manual**: Can also trigger via `gh workflow run deploy.yml` or use `/deploy`.
+- A separate repo manages the infrastructure:
   [professional-profile-iac](https://github.com/gamaware/professional-profile-iac)
+- No `package.json` at root — Node.js is only used in CI for linting tools.
 
 ## Security
 

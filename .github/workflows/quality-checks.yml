@@ -288,7 +288,7 @@ jobs:
 
       - name: Run Vale
         id: vale
-        uses: errata-ai/vale-action@v2
+        uses: errata-ai/vale-action@v3
         with:
           files: '**/*.md'
           vale_flags: '--config=.vale.ini'

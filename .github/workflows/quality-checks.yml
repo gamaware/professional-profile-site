@@ -326,7 +326,7 @@ jobs:
 
       - name: Run unit tests
         id: unit
-        run: node --test --experimental-test-coverage tests/unit/
+        run: node --test --experimental-test-coverage tests/unit/*.test.mjs
 
       - name: Post summary
         if: always()

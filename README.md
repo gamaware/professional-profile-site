@@ -73,10 +73,8 @@ style.css                  # Stylesheet (dark mode, responsive)
 main.js                    # Language selector and PDF download
 error.html                 # Custom 404 page
 headshot.jpg               # Profile photo
-CLAUDE.md                  # Claude Code project instructions
 CONTRIBUTING.md            # Contribution guidelines
 SECURITY.md                # Security disclosure policy
-.claude/                   # Claude Code hooks and skills
 .github/                   # CI/CD, templates, dependabot
 docs/adr/                  # Architecture Decision Records
 ```
@@ -104,4 +102,4 @@ Security checks at every stage of the development lifecycle:
 
 ## Author
 
-Alex Garcia — [gamaware@gmail.com](mailto:gamaware@gmail.com)
+Alex García — [Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103) · [GitHub](https://github.com/gamaware)

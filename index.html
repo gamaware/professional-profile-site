@@ -89,26 +89,24 @@
       }
     </style>
 
-    <link type="text/css" rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link
-      href="https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300"
-      rel="stylesheet"
-      type="text/css"
+      rel="preload"
+      href="fonts/lato-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
-
-    <!-- Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=UA-259577331-1"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "UA-259577331-1");
-    </script>
+    <link
+      rel="preload"
+      href="fonts/rokkitt-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
 
     <!-- Print-specific styles -->
     <style>
@@ -143,14 +141,10 @@
         }
       }
     </style>
-
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
   </head>
   <body id="top">
     <!-- Language selector -->
-    <div id="controls" class="quickFade delayOne">
+    <div id="controls">
       <div class="language-selector">
         <select id="language-select" onchange="changeLanguage(this.value)">
           <option value="en">English</option>
@@ -162,23 +156,27 @@
 
     <!-- English Version -->
     <div id="en-version">
-      <div id="cv" class="instaFade">
+      <div id="cv">
         <div class="mainDetails">
-          <div id="headshot" class="quickFade">
-            <img
-              src="headshot.jpg"
-              alt="Alex García"
-              width="1280"
-              height="1280"
-            />
+          <div id="headshot">
+            <picture>
+              <source srcset="headshot.webp" type="image/webp" />
+              <img
+                src="headshot.jpg"
+                alt="Alex García"
+                width="176"
+                height="176"
+                decoding="async"
+              />
+            </picture>
           </div>
 
           <div id="name">
-            <h1 class="quickFade delayTwo">Alex García</h1>
-            <h4 class="quickFade delayThree">DevOps Consultant @AWS</h4>
+            <h1>Alex García</h1>
+            <h4>DevOps Consultant @AWS</h4>
           </div>
 
-          <div id="contactDetails" class="quickFade delayFour">
+          <div id="contactDetails">
             <ul>
               <li>
                 e: <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
@@ -198,7 +196,7 @@
           <div class="clear"></div>
         </div>
 
-        <div id="mainArea" class="quickFade delayFive">
+        <div id="mainArea">
           <section>
             <article>
               <div class="sectionTitle">
@@ -334,7 +332,7 @@
       </div>
 
       <!-- Download button section -->
-      <div id="downloadSection" class="quickFade delaySix">
+      <div id="downloadSection">
         <button onclick="printResume('en')" class="downloadBtn">
           Download PDF Resume
         </button>
@@ -344,23 +342,27 @@
 
     <!-- Spanish Version -->
     <div id="es-version" style="display: none">
-      <div id="es-cv" class="instaFade">
+      <div id="es-cv">
         <div class="mainDetails">
-          <div id="es-headshot" class="quickFade">
-            <img
-              src="headshot.jpg"
-              alt="Alex García"
-              width="1280"
-              height="1280"
-            />
+          <div id="es-headshot">
+            <picture>
+              <source srcset="headshot.webp" type="image/webp" />
+              <img
+                src="headshot.jpg"
+                alt="Alex García"
+                width="176"
+                height="176"
+                decoding="async"
+              />
+            </picture>
           </div>
 
           <div id="es-name">
-            <h1 class="quickFade delayTwo">Alex García</h1>
-            <h4 class="quickFade delayThree">Consultor DevOps @AWS</h4>
+            <h1>Alex García</h1>
+            <h4>Consultor DevOps @AWS</h4>
           </div>
 
-          <div id="es-contactDetails" class="quickFade delayFour">
+          <div id="es-contactDetails">
             <ul>
               <li>
                 e: <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
@@ -380,7 +382,7 @@
           <div class="clear"></div>
         </div>
 
-        <div id="es-mainArea" class="quickFade delayFive">
+        <div id="es-mainArea">
           <section>
             <article>
               <div class="sectionTitle">
@@ -522,7 +524,7 @@
       </div>
 
       <!-- Download button section -->
-      <div id="es-downloadSection" class="quickFade delaySix">
+      <div id="es-downloadSection">
         <button onclick="printResume('es')" class="downloadBtn">
           Descargar CV en PDF
         </button>
@@ -532,23 +534,27 @@
 
     <!-- Portuguese Version -->
     <div id="pt-version" style="display: none">
-      <div id="pt-cv" class="instaFade">
+      <div id="pt-cv">
         <div class="mainDetails">
-          <div id="pt-headshot" class="quickFade">
-            <img
-              src="headshot.jpg"
-              alt="Alex García"
-              width="1280"
-              height="1280"
-            />
+          <div id="pt-headshot">
+            <picture>
+              <source srcset="headshot.webp" type="image/webp" />
+              <img
+                src="headshot.jpg"
+                alt="Alex García"
+                width="176"
+                height="176"
+                decoding="async"
+              />
+            </picture>
           </div>
 
           <div id="pt-name">
-            <h1 class="quickFade delayTwo">Alex García</h1>
-            <h4 class="quickFade delayThree">Consultor DevOps @AWS</h4>
+            <h1>Alex García</h1>
+            <h4>Consultor DevOps @AWS</h4>
           </div>
 
-          <div id="pt-contactDetails" class="quickFade delayFour">
+          <div id="pt-contactDetails">
             <ul>
               <li>
                 e: <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
@@ -568,7 +574,7 @@
           <div class="clear"></div>
         </div>
 
-        <div id="pt-mainArea" class="quickFade delayFive">
+        <div id="pt-mainArea">
           <section>
             <article>
               <div class="sectionTitle">
@@ -709,14 +715,12 @@
       </div>
 
       <!-- Download button section -->
-      <div id="pt-downloadSection" class="quickFade delaySix">
+      <div id="pt-downloadSection">
         <button onclick="printResume('pt')" class="downloadBtn">
           Baixar Currículo em PDF
         </button>
         <p class="last-updated">Última atualização: 9 de junho de 2025</p>
       </div>
     </div>
-
-    <script src="main.js"></script>
   </body>
 </html>

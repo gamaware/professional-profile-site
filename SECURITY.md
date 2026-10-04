@@ -10,7 +10,8 @@ security concerns are XSS vulnerabilities, injected content, and credential expo
 If you find a security vulnerability in the website code or CI/CD configuration,
 please **do not open a public GitHub Issue**.
 
-Instead, report it privately via email: <gamaware@gmail.com>
+Instead, report it privately through
+[GitHub private vulnerability reporting](https://github.com/gamaware/professional-profile-site/security/advisories/new).
 
 Include:
 

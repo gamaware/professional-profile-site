@@ -36,4 +36,4 @@ Open a [GitHub Issue](../../issues) describing:
 
 ## Questions
 
-Reach out via email: <gamaware@gmail.com>
+Open a [GitHub issue](https://github.com/gamaware/professional-profile-site/issues).

@@ -10,6 +10,9 @@ on:
       - '*.jpg'
       - '*.png'
       - '*.gif'
+      - '*.webp'
+      - '*.svg'
+      - 'fonts/**'
   workflow_dispatch:
 
 concurrency:

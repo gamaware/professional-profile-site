@@ -1,94 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Alex García - Resume</title>
-
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="The Curriculum Vitae of Alex García." />
     <meta charset="UTF-8" />
-
-    <!-- Inline critical CSS for controls -->
-    <style>
-      /* Critical controls styling */
-      #controls {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 10px 20px;
-        background: #ededed;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        max-width: 800px;
-        margin: 20px auto;
-      }
-
-      .language-selector select {
-        padding: 8px 12px;
-        border: 1px solid #dedede;
-        border-radius: 4px;
-        background-color: #f3f3f3;
-        color: #222;
-        font-size: 14px;
-        cursor: pointer;
-      }
-
-      .downloadBtn {
-        display: inline-block;
-        background-color: #4caf50;
-        color: white;
-        padding: 12px 24px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        margin: 20px auto;
-        border-radius: 4px;
-        transition:
-          background-color 0.3s,
-          transform 0.2s;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        border: none;
-      }
-
-      .downloadBtn:hover {
-        background-color: #45a049;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      #downloadSection,
-      #es-downloadSection,
-      #pt-downloadSection {
-        text-align: center;
-        margin: 30px 0;
-      }
-
-      .last-updated {
-        font-size: 0.8em;
-        text-align: center;
-        color: #444;
-        margin-top: 10px;
-        font-style: italic;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        #controls {
-          background: #1a1a1a;
-        }
-
-        .language-selector select {
-          background-color: #2d2d2d;
-          color: #f0f0f0;
-          border-color: #444444;
-        }
-
-        .last-updated {
-          color: #cccccc;
-        }
-      }
-    </style>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alex García - Resume</title>
+    <meta name="description" content="The Curriculum Vitae of Alex García." />
+    <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link
@@ -107,58 +24,23 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script src="main.js" defer></script>
-
-    <!-- Print-specific styles -->
-    <style>
-      @media print {
-        body {
-          background: white !important;
-          color: black !important;
-        }
-        #controls,
-        .downloadBtn,
-        .last-updated {
-          display: none !important;
-        }
-        #cv,
-        #es-cv,
-        #pt-cv {
-          width: 100% !important;
-          max-width: 100% !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          box-shadow: none !important;
-        }
-        .mainDetails {
-          border-bottom-color: #000 !important;
-        }
-        a {
-          color: #000 !important;
-          text-decoration: none !important;
-        }
-        .sectionTitle h1 {
-          color: #000 !important;
-        }
-      }
-    </style>
   </head>
-  <body id="top">
-    <!-- Language selector -->
-    <div id="controls">
-      <div class="language-selector">
-        <select id="language-select" onchange="changeLanguage(this.value)">
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="pt">Português</option>
-        </select>
-      </div>
+  <body>
+    <div id="controls" class="controls">
+      <label class="visually-hidden" for="language-select"
+        >Language / Idioma / Idioma</label
+      >
+      <select id="language-select" class="language-select">
+        <option value="en" lang="en">English</option>
+        <option value="es" lang="es">Español</option>
+        <option value="pt" lang="pt">Português</option>
+      </select>
     </div>
 
-    <!-- English Version -->
-    <div id="en-version">
-      <div id="cv">
-        <div class="mainDetails">
-          <div id="headshot">
+    <main id="en-version" class="version" lang="en">
+      <article id="cv" class="cv">
+        <header class="mainDetails">
+          <div id="headshot" class="headshot">
             <picture>
               <source srcset="headshot.webp" type="image/webp" />
               <img
@@ -171,18 +53,19 @@
             </picture>
           </div>
 
-          <div id="name">
+          <div id="name" class="name">
             <h1>Alex García</h1>
-            <h4>DevOps Consultant @AWS</h4>
+            <p class="role">DevOps Consultant @AWS</p>
           </div>
 
-          <div id="contactDetails">
+          <div id="contactDetails" class="contactDetails">
             <ul>
               <li>
-                e: <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
+                <span class="contactLabel">e:</span>
+                <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
               </li>
               <li>
-                g:
+                <span class="contactLabel">g:</span>
                 <a
                   href="https://github.com/gamaware"
                   target="_blank"
@@ -190,43 +73,38 @@
                   >github.com/gamaware</a
                 >
               </li>
-              <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
+              <li>
+                <span class="contactLabel">w:</span>
+                <a href="https://alexgarcia.info">alexgarcia.info</a>
+              </li>
             </ul>
           </div>
-          <div class="clear"></div>
-        </div>
+        </header>
 
-        <div id="mainArea">
-          <section>
-            <article>
-              <div class="sectionTitle">
-                <h1>Personal Profile</h1>
-              </div>
-
-              <div class="sectionContent">
-                <p>
-                  IT Expert with 17+ years of experience in Operations, Support,
-                  and Software Development Projects. Skilled in Cloud Computing,
-                  Databases, Configuration Management, and Operating Systems.
-                  Adaptable, flexible, and resourceful, I thrive on challenges
-                  and seek opportunities to expand my knowledge in emerging
-                  technologies. Passionate about DevOps culture, Python, Cloud
-                  Computing, Big Data, AI/Machine Learning, and Open Source
-                  Software.
-                </p>
-              </div>
-            </article>
-            <div class="clear"></div>
+        <div id="mainArea" class="mainArea">
+          <section class="cvSection" aria-labelledby="en-profile-title">
+            <h2 id="en-profile-title" class="sectionTitle">Personal Profile</h2>
+            <div class="sectionContent">
+              <p>
+                IT Expert with 17+ years of experience in Operations, Support,
+                and Software Development Projects. Skilled in Cloud Computing,
+                Databases, Configuration Management, and Operating Systems.
+                Adaptable, flexible, and resourceful, I thrive on challenges and
+                seek opportunities to expand my knowledge in emerging
+                technologies. Passionate about DevOps culture, Python, Cloud
+                Computing, Big Data, AI/Machine Learning, and Open Source
+                Software.
+              </p>
+            </div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Work Experience</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="en-experience-title">
+            <h2 id="en-experience-title" class="sectionTitle">
+              Work Experience
+            </h2>
             <div class="sectionContent">
-              <article>
-                <h2>DevOps Consultant at AWS</h2>
+              <article class="entry">
+                <h3>DevOps Consultant at AWS</h3>
                 <p class="subDetails">2022 - Present</p>
                 <p>
                   As a DevOps Consultant at AWS ProServe, I architect and
@@ -245,9 +123,8 @@
                   and container orchestration using Kubernetes on AWS.
                 </p>
               </article>
-
-              <article>
-                <h2>Senior Site Reliability Engineer at Wizeline</h2>
+              <article class="entry">
+                <h3>Senior Site Reliability Engineer at Wizeline</h3>
                 <p class="subDetails">2022</p>
                 <p>
                   As a Sr. SRE, I spearheaded a successful on-prem to AWS
@@ -257,9 +134,8 @@
                   conducting technical interviews.
                 </p>
               </article>
-
-              <article>
-                <h2>Linux Support Engineer at Rackspace</h2>
+              <article class="entry">
+                <h3>Linux Support Engineer at Rackspace</h3>
                 <p class="subDetails">2021 - 2022</p>
                 <p>
                   Improved transactional operations for On-Prem and Cloud
@@ -268,9 +144,8 @@
                   awareness and contributed to process enhancements.
                 </p>
               </article>
-
-              <article>
-                <h2>DevOps Engineer at Oracle</h2>
+              <article class="entry">
+                <h3>DevOps Engineer at Oracle</h3>
                 <p class="subDetails">2014 - 2021</p>
                 <p>
                   Led Infrastructure as Code activities, managed the CI/CD
@@ -282,14 +157,10 @@
                 </p>
               </article>
             </div>
-            <div class="clear"></div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Key Skills</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="en-skills-title">
+            <h2 id="en-skills-title" class="sectionTitle">Key Skills</h2>
             <div class="sectionContent">
               <ul class="keySkills">
                 <li>AWS</li>
@@ -302,49 +173,41 @@
                 <li>Terraform</li>
               </ul>
             </div>
-            <div class="clear"></div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Education</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="en-education-title">
+            <h2 id="en-education-title" class="sectionTitle">Education</h2>
             <div class="sectionContent">
-              <article>
-                <h2>
+              <article class="entry">
+                <h3>
                   Monterrey Institute of Technology and Higher Education -
                   Mexico
-                </h2>
+                </h3>
                 <p class="subDetails">Master's, Computer Science</p>
               </article>
-
-              <article>
-                <h2>
+              <article class="entry">
+                <h3>
                   Western Institute of Technology and Higher Education - Mexico
-                </h2>
+                </h3>
                 <p class="subDetails">B. Tech, Information Technology</p>
               </article>
             </div>
-            <div class="clear"></div>
           </section>
         </div>
-      </div>
+      </article>
 
-      <!-- Download button section -->
-      <div id="downloadSection">
-        <button onclick="printResume('en')" class="downloadBtn">
+      <footer id="downloadSection" class="downloadSection">
+        <button type="button" class="downloadBtn" data-lang="en">
           Download PDF Resume
         </button>
         <p class="last-updated">Last updated: June 9, 2025</p>
-      </div>
-    </div>
+      </footer>
+    </main>
 
-    <!-- Spanish Version -->
-    <div id="es-version" style="display: none">
-      <div id="es-cv">
-        <div class="mainDetails">
-          <div id="es-headshot">
+    <main id="es-version" class="version" lang="es" hidden>
+      <article id="es-cv" class="cv">
+        <header class="mainDetails">
+          <div id="es-headshot" class="headshot">
             <picture>
               <source srcset="headshot.webp" type="image/webp" />
               <img
@@ -357,18 +220,19 @@
             </picture>
           </div>
 
-          <div id="es-name">
+          <div id="es-name" class="name">
             <h1>Alex García</h1>
-            <h4>Consultor DevOps @AWS</h4>
+            <p class="role">Consultor DevOps @AWS</p>
           </div>
 
-          <div id="es-contactDetails">
+          <div id="es-contactDetails" class="contactDetails">
             <ul>
               <li>
-                e: <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
+                <span class="contactLabel">e:</span>
+                <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
               </li>
               <li>
-                g:
+                <span class="contactLabel">g:</span>
                 <a
                   href="https://github.com/gamaware"
                   target="_blank"
@@ -376,44 +240,38 @@
                   >github.com/gamaware</a
                 >
               </li>
-              <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
+              <li>
+                <span class="contactLabel">w:</span>
+                <a href="https://alexgarcia.info">alexgarcia.info</a>
+              </li>
             </ul>
           </div>
-          <div class="clear"></div>
-        </div>
+        </header>
 
-        <div id="es-mainArea">
-          <section>
-            <article>
-              <div class="sectionTitle">
-                <h1>Perfil Personal</h1>
-              </div>
-
-              <div class="sectionContent">
-                <p>
-                  Experto en TI con 17+ años de experiencia en Operaciones,
-                  Soporte y Proyectos de Desarrollo de Software. Especializado
-                  en Computación en la Nube, Bases de Datos, Gestión de
-                  Configuración y Sistemas Operativos. Adaptable, flexible y
-                  recursivo, prospero ante los desafíos y busco oportunidades
-                  para expandir mi conocimiento en tecnologías emergentes.
-                  Apasionado por la cultura DevOps, Python, Computación en la
-                  Nube, Big Data, IA/Machine Learning y Software de Código
-                  Abierto.
-                </p>
-              </div>
-            </article>
-            <div class="clear"></div>
+        <div id="es-mainArea" class="mainArea">
+          <section class="cvSection" aria-labelledby="es-profile-title">
+            <h2 id="es-profile-title" class="sectionTitle">Perfil Personal</h2>
+            <div class="sectionContent">
+              <p>
+                Experto en TI con 17+ años de experiencia en Operaciones,
+                Soporte y Proyectos de Desarrollo de Software. Especializado en
+                Computación en la Nube, Bases de Datos, Gestión de Configuración
+                y Sistemas Operativos. Adaptable, flexible y recursivo, prospero
+                ante los desafíos y busco oportunidades para expandir mi
+                conocimiento en tecnologías emergentes. Apasionado por la
+                cultura DevOps, Python, Computación en la Nube, Big Data,
+                IA/Machine Learning y Software de Código Abierto.
+              </p>
+            </div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Experiencia Laboral</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="es-experience-title">
+            <h2 id="es-experience-title" class="sectionTitle">
+              Experiencia Laboral
+            </h2>
             <div class="sectionContent">
-              <article>
-                <h2>Consultor DevOps en AWS</h2>
+              <article class="entry">
+                <h3>Consultor DevOps en AWS</h3>
                 <p class="subDetails">2022 - Presente</p>
                 <p>
                   Como Consultor DevOps en AWS ProServe, diseño e implemento
@@ -433,9 +291,8 @@
                   orquestación de contenedores usando Kubernetes en AWS.
                 </p>
               </article>
-
-              <article>
-                <h2>Ingeniero Senior de Confiabilidad de Sitios en Wizeline</h2>
+              <article class="entry">
+                <h3>Ingeniero Senior de Confiabilidad de Sitios en Wizeline</h3>
                 <p class="subDetails">2022</p>
                 <p>
                   Como Sr. SRE, lideré un exitoso proyecto de migración de
@@ -445,9 +302,8 @@
                   la adquisición de talento realizando entrevistas técnicas.
                 </p>
               </article>
-
-              <article>
-                <h2>Ingeniero de Soporte Linux en Rackspace</h2>
+              <article class="entry">
+                <h3>Ingeniero de Soporte Linux en Rackspace</h3>
                 <p class="subDetails">2021 - 2022</p>
                 <p>
                   Mejoré las operaciones transaccionales para clientes On-Prem y
@@ -457,9 +313,8 @@
                   mejoras de procesos.
                 </p>
               </article>
-
-              <article>
-                <h2>Ingeniero DevOps en Oracle</h2>
+              <article class="entry">
+                <h3>Ingeniero DevOps en Oracle</h3>
                 <p class="subDetails">2014 - 2021</p>
                 <p>
                   Dirigí actividades de Infraestructura como Código, gestioné el
@@ -471,14 +326,10 @@
                 </p>
               </article>
             </div>
-            <div class="clear"></div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Habilidades Clave</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="es-skills-title">
+            <h2 id="es-skills-title" class="sectionTitle">Habilidades Clave</h2>
             <div class="sectionContent">
               <ul class="keySkills">
                 <li>AWS</li>
@@ -491,52 +342,44 @@
                 <li>Terraform</li>
               </ul>
             </div>
-            <div class="clear"></div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Educación</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="es-education-title">
+            <h2 id="es-education-title" class="sectionTitle">Educación</h2>
             <div class="sectionContent">
-              <article>
-                <h2>
+              <article class="entry">
+                <h3>
                   Instituto Tecnológico y de Estudios Superiores de Monterrey -
                   México
-                </h2>
+                </h3>
                 <p class="subDetails">Maestría, Ciencias de la Computación</p>
               </article>
-
-              <article>
-                <h2>
+              <article class="entry">
+                <h3>
                   Instituto Tecnológico y de Estudios Superiores de Occidente -
                   México
-                </h2>
+                </h3>
                 <p class="subDetails">
                   Licenciatura, Tecnologías de la Información
                 </p>
               </article>
             </div>
-            <div class="clear"></div>
           </section>
         </div>
-      </div>
+      </article>
 
-      <!-- Download button section -->
-      <div id="es-downloadSection">
-        <button onclick="printResume('es')" class="downloadBtn">
+      <footer id="es-downloadSection" class="downloadSection">
+        <button type="button" class="downloadBtn" data-lang="es">
           Descargar CV en PDF
         </button>
         <p class="last-updated">Última actualización: 9 de junio de 2025</p>
-      </div>
-    </div>
+      </footer>
+    </main>
 
-    <!-- Portuguese Version -->
-    <div id="pt-version" style="display: none">
-      <div id="pt-cv">
-        <div class="mainDetails">
-          <div id="pt-headshot">
+    <main id="pt-version" class="version" lang="pt" hidden>
+      <article id="pt-cv" class="cv">
+        <header class="mainDetails">
+          <div id="pt-headshot" class="headshot">
             <picture>
               <source srcset="headshot.webp" type="image/webp" />
               <img
@@ -549,18 +392,19 @@
             </picture>
           </div>
 
-          <div id="pt-name">
+          <div id="pt-name" class="name">
             <h1>Alex García</h1>
-            <h4>Consultor DevOps @AWS</h4>
+            <p class="role">Consultor DevOps @AWS</p>
           </div>
 
-          <div id="pt-contactDetails">
+          <div id="pt-contactDetails" class="contactDetails">
             <ul>
               <li>
-                e: <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
+                <span class="contactLabel">e:</span>
+                <a href="mailto:gamaware@gmail.com">gamaware@gmail.com</a>
               </li>
               <li>
-                g:
+                <span class="contactLabel">g:</span>
                 <a
                   href="https://github.com/gamaware"
                   target="_blank"
@@ -568,44 +412,38 @@
                   >github.com/gamaware</a
                 >
               </li>
-              <li>w: <a href="https://alexgarcia.info">alexgarcia.info</a></li>
+              <li>
+                <span class="contactLabel">w:</span>
+                <a href="https://alexgarcia.info">alexgarcia.info</a>
+              </li>
             </ul>
           </div>
-          <div class="clear"></div>
-        </div>
+        </header>
 
-        <div id="pt-mainArea">
-          <section>
-            <article>
-              <div class="sectionTitle">
-                <h1>Perfil Pessoal</h1>
-              </div>
-
-              <div class="sectionContent">
-                <p>
-                  Especialista em TI com 17+ anos de experiência em Operações,
-                  Suporte e Projetos de Desenvolvimento de Software.
-                  Especializado em Computação em Nuvem, Bancos de Dados,
-                  Gerenciamento de Configuração e Sistemas Operacionais.
-                  Adaptável, flexível e engenhoso, prospero com desafios e busco
-                  oportunidades para expandir meu conhecimento em tecnologias
-                  emergentes. Apaixonado por cultura DevOps, Python, Computação
-                  em Nuvem, Big Data, IA/Machine Learning e Software de Código
-                  Aberto.
-                </p>
-              </div>
-            </article>
-            <div class="clear"></div>
+        <div id="pt-mainArea" class="mainArea">
+          <section class="cvSection" aria-labelledby="pt-profile-title">
+            <h2 id="pt-profile-title" class="sectionTitle">Perfil Pessoal</h2>
+            <div class="sectionContent">
+              <p>
+                Especialista em TI com 17+ anos de experiência em Operações,
+                Suporte e Projetos de Desenvolvimento de Software. Especializado
+                em Computação em Nuvem, Bancos de Dados, Gerenciamento de
+                Configuração e Sistemas Operacionais. Adaptável, flexível e
+                engenhoso, prospero com desafios e busco oportunidades para
+                expandir meu conhecimento em tecnologias emergentes. Apaixonado
+                por cultura DevOps, Python, Computação em Nuvem, Big Data,
+                IA/Machine Learning e Software de Código Aberto.
+              </p>
+            </div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Experiência Profissional</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="pt-experience-title">
+            <h2 id="pt-experience-title" class="sectionTitle">
+              Experiência Profissional
+            </h2>
             <div class="sectionContent">
-              <article>
-                <h2>Consultor DevOps na AWS</h2>
+              <article class="entry">
+                <h3>Consultor DevOps na AWS</h3>
                 <p class="subDetails">2022 - Presente</p>
                 <p>
                   Como Consultor DevOps na AWS ProServe, arquiteto e implemento
@@ -626,9 +464,8 @@
                   Kubernetes na AWS.
                 </p>
               </article>
-
-              <article>
-                <h2>Engenheiro Sênior de Confiabilidade de Site na Wizeline</h2>
+              <article class="entry">
+                <h3>Engenheiro Sênior de Confiabilidade de Site na Wizeline</h3>
                 <p class="subDetails">2022</p>
                 <p>
                   Como Sr. SRE, liderei um projeto bem-sucedido de migração
@@ -638,9 +475,8 @@
                   aquisição de talentos realizando entrevistas técnicas.
                 </p>
               </article>
-
-              <article>
-                <h2>Engenheiro de Suporte Linux na Rackspace</h2>
+              <article class="entry">
+                <h3>Engenheiro de Suporte Linux na Rackspace</h3>
                 <p class="subDetails">2021 - 2022</p>
                 <p>
                   Melhorei operações transacionais para clientes On-Prem e Cloud
@@ -650,9 +486,8 @@
                   melhorias de processos.
                 </p>
               </article>
-
-              <article>
-                <h2>Engenheiro DevOps na Oracle</h2>
+              <article class="entry">
+                <h3>Engenheiro DevOps na Oracle</h3>
                 <p class="subDetails">2014 - 2021</p>
                 <p>
                   Liderei atividades de Infraestrutura como Código, gerenciei o
@@ -664,14 +499,12 @@
                 </p>
               </article>
             </div>
-            <div class="clear"></div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Habilidades Principais</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="pt-skills-title">
+            <h2 id="pt-skills-title" class="sectionTitle">
+              Habilidades Principais
+            </h2>
             <div class="sectionContent">
               <ul class="keySkills">
                 <li>AWS</li>
@@ -684,43 +517,36 @@
                 <li>Terraform</li>
               </ul>
             </div>
-            <div class="clear"></div>
           </section>
 
-          <section>
-            <div class="sectionTitle">
-              <h1>Educação</h1>
-            </div>
-
+          <section class="cvSection" aria-labelledby="pt-education-title">
+            <h2 id="pt-education-title" class="sectionTitle">Educação</h2>
             <div class="sectionContent">
-              <article>
-                <h2>
+              <article class="entry">
+                <h3>
                   Instituto Tecnológico e de Estudos Superiores de Monterrey -
                   México
-                </h2>
+                </h3>
                 <p class="subDetails">Mestrado, Ciência da Computação</p>
               </article>
-
-              <article>
-                <h2>
+              <article class="entry">
+                <h3>
                   Instituto Tecnológico e de Estudos Superiores do Ocidente -
                   México
-                </h2>
+                </h3>
                 <p class="subDetails">Bacharelado, Tecnologia da Informação</p>
               </article>
             </div>
-            <div class="clear"></div>
           </section>
         </div>
-      </div>
+      </article>
 
-      <!-- Download button section -->
-      <div id="pt-downloadSection">
-        <button onclick="printResume('pt')" class="downloadBtn">
+      <footer id="pt-downloadSection" class="downloadSection">
+        <button type="button" class="downloadBtn" data-lang="pt">
           Baixar Currículo em PDF
         </button>
         <p class="last-updated">Última atualização: 9 de junho de 2025</p>
-      </div>
-    </div>
+      </footer>
+    </main>
   </body>
 </html>

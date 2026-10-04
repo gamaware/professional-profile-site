@@ -30,3 +30,9 @@ screenshot*.png
 # Logs
 *.log
 logs/
+
+# Test output
+playwright-report/
+test-results/
+.playwright-cli/
+.lighthouseci/

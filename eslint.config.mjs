@@ -21,4 +21,31 @@ export default [
       "no-implied-eval": "error",
     },
   },
+  {
+    // Tests, the local server and tool configuration run in Node, with
+    // browser globals only inside page callbacks.
+    files: ["**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: "module",
+      globals: {
+        process: "readonly",
+        console: "readonly",
+        URL: "readonly",
+        window: "readonly",
+        document: "readonly",
+        localStorage: "readonly",
+        getComputedStyle: "readonly",
+        requestAnimationFrame: "readonly",
+        performance: "readonly",
+      },
+    },
+    rules: {
+      "no-unused-vars": "error",
+      "no-undef": "error",
+      eqeqeq: "error",
+      "no-eval": "error",
+      "no-implied-eval": "error",
+    },
+  },
 ];

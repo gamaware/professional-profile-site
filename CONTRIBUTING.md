@@ -22,7 +22,7 @@ Open a [GitHub Issue](../../issues) describing:
 1. Fork the repository
 2. Create a branch: `git checkout -b fix/short-description`
 3. Make your changes
-4. Run pre-commit hooks: `pre-commit run --all-files`
+4. Run the tests and hooks: `npm ci`, `npm test`, `pre-commit run --all-files`
 5. Open a Pull Request against `main` with a clear description of what you changed and why
 
 ## Code Guidelines

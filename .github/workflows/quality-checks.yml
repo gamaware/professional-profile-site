@@ -179,13 +179,13 @@ jobs:
 
       - name: Lint JavaScript
         id: eslint
-        run: eslint "*.js"
+        run: eslint .
 
       - name: Post summary
         if: always()
         run: |
-          JS_COUNT=$(find . -name '*.js' -not -path './.git/*' \
-            -not -path './node_modules/*' | wc -l | tr -d ' ')
+          JS_COUNT=$(find . \( -name '*.js' -o -name '*.mjs' \) \
+            -not -path './.git/*' -not -path './node_modules/*' | wc -l | tr -d ' ')
           STATUS="${{ steps.eslint.outcome == 'success' && 'Passed' || 'Failed' }}"
           {
             echo "## JavaScript Linting (ESLint)"
@@ -304,6 +304,81 @@ jobs:
             echo ""
             echo "- Files scanned: $MD_COUNT"
             echo "- Styles: write-good, proselint"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run unit tests
+        id: unit
+        run: node --test --experimental-test-coverage tests/unit/
+
+      - name: Post summary
+        if: always()
+        run: |
+          STATUS="${{ steps.unit.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Unit Tests (node:test + happy-dom)"
+            echo ""
+            echo "- Target: main.js"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  e2e-tests:
+    name: Browser Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        id: e2e
+        run: npx playwright test
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Post summary
+        if: always()
+        run: |
+          STATUS="${{ steps.e2e.outcome == 'success' && 'Passed' || 'Failed' }}"
+          {
+            echo "## Browser Tests (Playwright)"
+            echo ""
+            echo "- Functional and smoke suites against a local static server"
             echo "- Status: $STATUS"
           } >> "$GITHUB_STEP_SUMMARY"
 

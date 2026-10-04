@@ -43,8 +43,8 @@ EXCLUDES=(
 # Images and fonts change rarely and get a new file name when they do, so
 # browsers and CloudFront may keep them for a year.
 LONG_CACHE="public, max-age=31536000, immutable"
-# Pages, styles and scripts keep stable names, so they revalidate quickly.
-SHORT_CACHE="public, max-age=300, must-revalidate"
+# Pages, styles and scripts keep stable names, so browsers revalidate them on every load.
+SHORT_CACHE="no-cache"
 
 sync_pass() {
   aws s3 sync . "s3://$S3_BUCKET" --delete "$@"

@@ -100,7 +100,7 @@ test("download button shows a busy state and calls window.print", async ({
   await expect(page.locator("#es-version")).toBeVisible();
 });
 
-test("print media hides the controls and fits the PDF on few A4 pages", async ({
+test("print media hides the controls and fits the PDF on two A4 pages", async ({
   page,
 }) => {
   await page.goto("/");
@@ -113,7 +113,7 @@ test("print media hides the controls and fits the PDF on few A4 pages", async ({
     const pages = (pdf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) || [])
       .length;
     expect(pages, lang).toBeGreaterThanOrEqual(1);
-    expect(pages, lang).toBeLessThanOrEqual(3);
+    expect(pages, lang).toBeLessThanOrEqual(2);
   }
 });
 

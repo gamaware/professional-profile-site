@@ -556,23 +556,30 @@ select:focus-visible {
     padding: 0;
   }
 
+  /* Floats instead of grid: Chrome moves a whole grid row to the next
+     page instead of splitting it, which leaves half-empty A4 pages. */
   .cvSection {
-    display: grid;
-    grid-template-columns: 9rem minmax(0, 1fr);
-    column-gap: var(--s6);
+    display: flow-root;
     padding: var(--s4) 0;
+  }
+
+  .sectionTitle {
+    float: left;
+    width: 9rem;
+  }
+
+  .sectionContent {
+    margin-left: calc(9rem + var(--s6));
   }
 
   .keySkills {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .entry,
-  .sectionTitle {
+  .entry {
     break-inside: avoid;
   }
 
-  h2,
   h3 {
     break-after: avoid;
   }

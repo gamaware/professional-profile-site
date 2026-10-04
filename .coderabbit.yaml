@@ -20,10 +20,6 @@ reviews:
       instructions: >
         Review for browser compatibility, no-eval, proper variable scoping,
         and DOM manipulation best practices.
-    - path: "CLAUDE.md"
-      instructions: >
-        Verify that the documented structure, hooks, and CI/CD sections
-        match the actual repository state.
   path_filters:
     - "!**/*.jpg"
     - "!**/*.png"

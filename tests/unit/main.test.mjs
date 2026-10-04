@@ -179,6 +179,28 @@ test("printResume restores the previously visible language", () => {
   assert.equal(t.doc.documentElement.lang, "pt");
 });
 
+// Regression: a language picked during the print delay used to be
+// overwritten by the restore, leaving the page and storage out of sync.
+test("printResume locks the language select until the print finishes", () => {
+  const t = load({ stored: "pt" });
+  t.window.printResume("en");
+  assert.equal(t.select.disabled, true, "select is locked during the delay");
+  t.flushTimers();
+  assert.deepEqual(t.printCalls, ["en"]);
+  assert.equal(t.select.disabled, false, "select is unlocked afterwards");
+  assert.deepEqual(t.visible(), ["pt"]);
+  assert.equal(t.select.value, "pt");
+  assert.equal(t.storage.data.get("language"), "pt");
+});
+
+test("printResume keeps a select that was already disabled disabled", () => {
+  const t = load();
+  t.select.disabled = true;
+  t.window.printResume("en");
+  t.flushTimers();
+  assert.equal(t.select.disabled, true);
+});
+
 test("printResume restores the button even if print throws", () => {
   const t = load();
   t.window.print = () => {
@@ -190,6 +212,7 @@ test("printResume restores the button even if print throws", () => {
   assert.throws(() => t.flushTimers(), /print blocked/);
   assert.equal(button.textContent, original);
   assert.equal(button.disabled, false);
+  assert.equal(t.select.disabled, false);
 });
 
 test("printResume with an unsupported code prints English without throwing", () => {

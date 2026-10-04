@@ -201,6 +201,16 @@ select:focus-visible {
   cursor: pointer;
 }
 
+.language-select:hover,
+.language-select:active {
+  border-color: var(--accent);
+}
+
+.language-select:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
 /* ==========================================================================
    Resume card
    ========================================================================== */
@@ -266,6 +276,7 @@ select:focus-visible {
 }
 
 .contactDetails a:hover,
+.contactDetails a:active,
 .contactDetails a:focus-visible {
   color: var(--accent);
   text-decoration-line: underline;
@@ -490,6 +501,10 @@ select:focus-visible {
 
 .homeButton:hover {
   background: var(--action-hover);
+}
+
+.homeButton:active {
+  transform: translateY(1px);
 }
 
 /* ==========================================================================

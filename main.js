@@ -60,6 +60,13 @@ function printResume(lang) {
 
   var previousLanguage = normalizeLanguage(document.documentElement.lang);
   showLanguage(language);
+  // The selector is locked while the dialog is prepared, so a language
+  // change cannot be overwritten when the previous language is restored.
+  var select = document.getElementById("language-select");
+  var selectWasDisabled = select ? select.disabled : false;
+  if (select) {
+    select.disabled = true;
+  }
   var originalText = button.textContent;
   button.textContent = "Preparing PDF...";
   button.disabled = true;
@@ -72,6 +79,9 @@ function printResume(lang) {
       button.textContent = originalText;
       button.disabled = false;
       button.removeAttribute("aria-busy");
+      if (select) {
+        select.disabled = selectWasDisabled;
+      }
       showLanguage(previousLanguage);
     }
   }, PRINT_DELAY_MS);

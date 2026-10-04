@@ -61,8 +61,9 @@ paths with `error.html` and status 404, like CloudFront.
 
 ## Caching
 
-The deploy script sets `Cache-Control` per file type: images and fonts are cached for one year as immutable, HTML,
-CSS and JavaScript for five minutes. Give a changed image or font a new file name so visitors get the new version.
+The deploy script sets `Cache-Control` per file type: images and fonts are cached for one year as immutable. HTML,
+CSS and JavaScript are revalidated on every load. Give a changed image or font a new file name so visitors get the
+new version.
 
 ## Development Workflow
 

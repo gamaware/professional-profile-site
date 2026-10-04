@@ -28,9 +28,10 @@ function resolvePath(urlPath) {
 }
 
 const server = createServer(async (req, res) => {
-  const file = resolvePath(req.url || "/");
-  const type = file ? TYPES[extname(file)] : undefined;
   try {
+    // decodeURIComponent throws on malformed escapes such as "/%".
+    const file = resolvePath(req.url || "/");
+    const type = file ? TYPES[extname(file)] : undefined;
     if (!file || !type) throw new Error("not served");
     const body = await readFile(file);
     res.writeHead(200, { "content-type": type });

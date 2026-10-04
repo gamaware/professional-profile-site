@@ -102,4 +102,4 @@ Security checks at every stage of the development lifecycle:
 
 ## Author
 
-Alex García — [Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103) · [GitHub](https://github.com/gamaware)
+Alex García — [gamaware@gmail.com](mailto:gamaware@gmail.com) · [GitHub](https://github.com/gamaware)

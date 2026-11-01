@@ -21,7 +21,7 @@ jobs:
 
       - name: Lint Markdown files
         id: mdlint
-        uses: DavidAnson/markdownlint-cli2-action@v24
+        uses: DavidAnson/markdownlint-cli2-action@v25
         with:
           config: '.markdownlint.yaml'
 

@@ -108,12 +108,12 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      - name: Install HTMLHint
-        run: npm install -g htmlhint
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
 
       - name: Validate HTML
         id: htmlhint
-        run: htmlhint ./*.html
+        run: npx --no-install htmlhint ./*.html
 
       - name: Post summary
         if: always()
@@ -141,12 +141,12 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      - name: Install Stylelint
-        run: npm install -g stylelint stylelint-config-standard
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
 
       - name: Lint CSS
         id: stylelint
-        run: stylelint "*.css"
+        run: npx --no-install stylelint "*.css"
 
       - name: Post summary
         if: always()
@@ -174,12 +174,12 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      - name: Install ESLint
-        run: npm install -g eslint
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
 
       - name: Lint JavaScript
         id: eslint
-        run: eslint .
+        run: npx --no-install eslint .
 
       - name: Post summary
         if: always()
